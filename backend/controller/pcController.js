@@ -352,6 +352,11 @@ const downloadfile = async (req, res) => {
   const po_no = req.query.po_no;
   const supplier = req.query.supplier;
   const item = req.query.item;
+  const pricegreater = req.query.pricegreater;
+  const pricelesser = req.query.pricelesser;
+  const quantity = req.query.quantity;
+  const totalquantity = req.query.totalquantity;
+  const total = req.query.total;
 
   const query = {};
   if (sr_no) {
@@ -382,11 +387,33 @@ const downloadfile = async (req, res) => {
   if (supplier) {
     query.Supplier_Name = supplier;
   }
+
+  if (quantity) {
+    query.Quantity = quantity;
+  }
+
+  if (totalquantity) {
+    query.Total_Quantity = totalquantity;
+  }
+
+  if (total) {
+    query.Total = total;
+  }
+  console.log("Price is" + pricelesser);
+  if (pricegreater && pricelesser) {
+    query.Price = { $gte: pricelesser, $lte: pricegreater };
+  } else if (pricegreater) {
+    query.Price = { $lte: pricegreater };
+  } else if (pricelesser) {
+    query.Price = { $gte: pricelesser };
+  }
+
   var searchKey;
   if (item) {
     searchKey = new RegExp(item, "i");
     query.Item = searchKey;
   }
+
   const options = {
     collation: { locale: "en", strength: 2 },
   };
@@ -519,6 +546,13 @@ const downloadrepairfile = async (req, res) => {
   const bill_no = req.query.bill_no;
   const supplier = req.query.supplier;
   const description = req.query.description;
+  const material = req.query.material;
+  const amountlesser = req.query.amountlesser;
+  const amountgreater = req.query.amountgreater;
+  const expenselesser = req.query.expenselesser;
+  const expensegreater = req.query.expensegreater;
+
+  console.log("Amount less " + amountlesser);
 
   const query = {};
   if (sr_no) {
@@ -538,14 +572,37 @@ const downloadrepairfile = async (req, res) => {
   if (supplier) {
     query.Name_Of_Supplier = supplier;
   }
+
+  if (material) {
+    query.Material = material;
+  }
+
+  if (amountlesser && amountgreater) {
+    query.Amount = { $gte: amountlesser, $lte: amountgreater };
+  } else if (amountgreater) {
+    query.Amount = { $lte: amountgreater };
+  } else if (amountlesser) {
+    query.Amount = { $gte: amountlesser };
+  }
+
   var searchKey;
   if (description) {
     searchKey = new RegExp(description, "i");
     query.Description_of_Material = searchKey;
   }
+
+  if (expenselesser && expensegreater) {
+    query.Yearly_expense = { $gte: expenselesser, $lte: expensegreater };
+  } else if (expensegreater) {
+    query.Yearly_expense = { $lte: expensegreater };
+  } else if (expenselesser) {
+    query.Yearly_expense = { $gte: expenselesser };
+  }
+
   const options = {
     collation: { locale: "en", strength: 2 },
   };
+
   var wb = xlsx.utils.book_new();
   Recurring.find(query, null, options)
     .select("-_id -Department")
