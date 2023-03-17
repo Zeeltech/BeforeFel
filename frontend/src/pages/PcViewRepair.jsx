@@ -3,7 +3,8 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import HeaderPc from "../components/HeaderPc";
 import PcSidebarRepair from "../components/PcSidebarRepair";
-import { MagnifyingGlass } from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const PcViewRepair = () => {
   const [files, setFiles] = useState([]);
@@ -23,7 +24,7 @@ const PcViewRepair = () => {
       {
         responseType: "blob",
         params: {
-          department: department,
+          department: response.data.department,
           sr_no: sr_no,
           academic_year: academic_year,
           bill_no: bill_no,
@@ -40,7 +41,22 @@ const PcViewRepair = () => {
     link.click();
     link.remove();
   };
-
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .post("http://localhost:5000/pc/deleterowrepair", {
+          id: id,
+        })
+        .then((res) => {
+          window.location.reload("user/pc/repair/view");
+        })
+        .catch((err) => {
+          window.location.reload("user/pc/repair/view");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
     setLoading(true);
     axios
@@ -58,7 +74,7 @@ const PcViewRepair = () => {
         return axios.get(`http://localhost:5000/pc/searchrepair`, {
           withCredentials: true,
           params: {
-            department: department,
+            department: response.data.department,
             sr_no: sr_no,
             academic_year: academic_year,
             bill_no: bill_no,
@@ -144,15 +160,17 @@ const PcViewRepair = () => {
           </div>
           {loading ? (
             <div className="loading">
-              <MagnifyingGlass
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="MagnifyingGlass-loading"
+              <Oval
+                height={40}
+                width={40}
+                color="#4fa94d"
                 wrapperStyle={{}}
-                wrapperClass="MagnifyingGlass-wrapper"
-                glassColor="#c0efff"
-                color="#e15b64"
+                wrapperClass=""
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#4fa94d"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
               />
             </div>
           ) : (
@@ -223,6 +241,18 @@ const PcViewRepair = () => {
                                 </td>
                                 <td className="py-3 px-6 text-center">
                                   <div>{file.Department}</div>
+                                </td>
+                                <td
+                                  className="py-3 px-6 text-center"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <div
+                                    className="transform hover:text-red-500 hover:scale-110"
+                                    onClick={() => handleDelete(file._id)}
+                                  >
+                                    <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
+                                    Delete
+                                  </div>
                                 </td>
                               </tr>
                             </tbody>

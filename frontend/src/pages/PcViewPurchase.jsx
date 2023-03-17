@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
 import HeaderPc from "../components/HeaderPc";
 import PcSidebarPurchase from "../components/PcSidebarPurchase";
-import { MagnifyingGlass } from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const PcViewPurchase = () => {
   const [files, setFiles] = useState([]);
@@ -43,6 +43,23 @@ const PcViewPurchase = () => {
     document.body.appendChild(link);
     link.click();
     link.remove();
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .post("http://localhost:5000/pc/deleterow", {
+          id: id,
+        })
+        .then((res) => {
+          window.location.reload("user/pc/purchase/view");
+        })
+        .catch((err) => {
+          window.location.reload("user/pc/purchase/view");
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -191,15 +208,17 @@ const PcViewPurchase = () => {
           </div>
           {loading ? (
             <div className="loading">
-              <MagnifyingGlass
-                visible={true}
-                height="80"
-                width="80"
-                ariaLabel="MagnifyingGlass-loading"
+              <Oval
+                height={40}
+                width={40}
+                color="#4fa94d"
                 wrapperStyle={{}}
-                wrapperClass="MagnifyingGlass-wrapper"
-                glassColor = '#c0efff'
-                color = '#e15b64'
+                wrapperClass=""
+                visible={true}
+                ariaLabel="oval-loading"
+                secondaryColor="#4fa94d"
+                strokeWidth={2}
+                strokeWidthSecondary={2}
               />
             </div>
           ) : (
@@ -292,6 +311,18 @@ const PcViewPurchase = () => {
                                 </td>
                                 <td className="py-3 px-6 text-center">
                                   <div>{file.Department}</div>
+                                </td>
+                                <td
+                                  className="py-3 px-6 text-center"
+                                  style={{ cursor: "pointer" }}
+                                >
+                                  <div
+                                    className="transform hover:text-red-500 hover:scale-110"
+                                    onClick={() => handleDelete(file._id)}
+                                  >
+                                    <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
+                                    Delete
+                                  </div>
                                 </td>
                               </tr>
                             </tbody>

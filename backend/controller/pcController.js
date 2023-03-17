@@ -813,6 +813,40 @@ const searchRepair = async (req, res) => {
     console.log(error);
   }
 };
+// ===================================================================
+// Delete row purchase
+const deleteRow = async (req, res) => {
+  try {
+    const { id } = req.body;
+    // console.log(id);
+    const row = await Purchase.findOne({ _id: id });
+    // console.log(row);
+    if (!id) {
+      return res.status(400).json({ message: "Data not found" });
+    }
+    await row.remove();
+
+    return res.status(404).json({ message: "Data deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+const deleteRowRepair = async (req, res) => {
+  try {
+    const { id } = req.body;
+    // console.log(id);
+    const row = await Recurring.findOne({ _id: id });
+    // console.log(row);
+    if (!id) {
+      return res.status(400).json({ message: "Data not found" });
+    }
+    await row.remove();
+
+    return res.status(404).json({ message: "Data deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   loginPc,
@@ -836,4 +870,6 @@ module.exports = {
   formrepair,
   searchPurchase,
   searchRepair,
+  deleteRow,
+  deleteRowRepair,
 };
