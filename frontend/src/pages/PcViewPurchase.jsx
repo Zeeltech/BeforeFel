@@ -4,6 +4,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import HeaderPc from "../components/HeaderPc";
 import PcSidebarPurchase from "../components/PcSidebarPurchase";
+import { Oval } from "react-loader-spinner";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const PcViewPurchase = () => {
   const [files, setFiles] = useState([]);
@@ -21,6 +23,7 @@ const PcViewPurchase = () => {
   const [quantity, setQuantity] = useState("");
   const [totalquantity, setTotalQuantity] = useState("");
   const [total, setTotal] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -51,7 +54,25 @@ const PcViewPurchase = () => {
     link.remove();
   };
 
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .post("http://localhost:5000/pc/deleterow", {
+          id: id,
+        })
+        .then((res) => {
+          window.location.reload("user/pc/purchase/view");
+        })
+        .catch((err) => {
+          window.location.reload("user/pc/purchase/view");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
+    setLoading(true);
     axios
       .get("http://localhost:5000/pc/getsupp", {
         withCredentials: true,
@@ -85,6 +106,7 @@ const PcViewPurchase = () => {
       })
       .then((response) => {
         setFiles(response.data.files);
+        setLoading(false);
       });
   }, [
     department,
@@ -113,6 +135,7 @@ const PcViewPurchase = () => {
           <div>
             <p className="text-color title-size"></p>
           </div>
+
           <div className="container table">
             <div className="overflow-x-auto">
               <div>
@@ -368,6 +391,18 @@ const PcViewPurchase = () => {
                               </td>
                               <td className="py-3 px-6 text-center">
                                 <div>{file.Department}</div>
+                              </td>
+                              <td
+                                className="py-3 px-6 text-center"
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div
+                                  className="transform hover:text-red-500 hover:scale-110"
+                                  onClick={() => handleDelete(file._id)}
+                                >
+                                  <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
+                                  Delete
+                                </div>
                               </td>
                             </tr>
                           </tbody>

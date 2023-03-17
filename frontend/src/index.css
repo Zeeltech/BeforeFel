@@ -248,7 +248,7 @@ input:focus::placeholder {
   flex-direction: column;
   justify-content: space-between;
 }
-#form-text {
+.form-text {
   color: #04151f;
   font-size: large;
   font-weight: 500;
@@ -484,7 +484,7 @@ span {
 .pc-form-back {
   background-color: #ffffff;
   border-radius: 14px;
-  padding: 17px;
+  padding: 20px 40px;
 }
 .pc-form-box {
   background-color: #56dca8;
@@ -525,6 +525,19 @@ span {
 }
 .try {
   border: 2px solid white;
+}
+/* =========================================================== */
+/* form  */
+.flex-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.form-text2 {
+  margin-right: 10px;
+}
+.new {
+  width: 210px;
 }
 
 .updown {

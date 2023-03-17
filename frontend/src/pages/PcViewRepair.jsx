@@ -3,6 +3,7 @@ import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import HeaderPc from "../components/HeaderPc";
 import PcSidebarRepair from "../components/PcSidebarRepair";
+import { RiDeleteBin6Line } from "react-icons/ri";
 
 const PcViewRepair = () => {
   const [files, setFiles] = useState([]);
@@ -49,6 +50,23 @@ const PcViewRepair = () => {
     document.body.appendChild(link);
     link.click();
     link.remove();
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios
+        .post("http://localhost:5000/pc/deleterowrepair", {
+          id: id,
+        })
+        .then((res) => {
+          window.location.reload("user/pc/repair/view");
+        })
+        .catch((err) => {
+          window.location.reload("user/pc/repair/view");
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -318,6 +336,18 @@ const PcViewRepair = () => {
                               </td>
                               <td className="py-3 px-6 text-center">
                                 <div>{file.Department}</div>
+                              </td>
+                              <td
+                                className="py-3 px-6 text-center"
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div
+                                  className="transform hover:text-red-500 hover:scale-110"
+                                  onClick={() => handleDelete(file._id)}
+                                >
+                                  <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
+                                  Delete
+                                </div>
                               </td>
                             </tr>
                           </tbody>
