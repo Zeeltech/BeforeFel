@@ -69,8 +69,10 @@ function PcFormRepair() {
       .then((response) => {
         if (response.data.message === "Data inserted in recurring database") {
           toast.success("Form submitted successfully");
+        } else if (response.data.message === "Duplicate data") {
+          toast.error("Duplicate data");
         } else {
-          toast.error("Error occurs ");
+          toast.error("Error");
         }
       })
       .catch((error) => {
@@ -88,122 +90,154 @@ function PcFormRepair() {
       <div className="pc-form-main">
         <div className="pc-form-back">
           <div>
-            <p id="form-text">Enter details of recurring</p>
+            <p className="form-text">Enter details of recurring</p>
             <form action="" className="box-grp">
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter  Sr no"
-                name="Sr_No"
-                value={formData.Sr_No}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Sr no</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter  Sr no"
+                  name="Sr_No"
+                  value={formData.Sr_No}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Description of Material"
-                name="Description_of_Material"
-                value={formData.Description_of_Material}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Description of Material</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Description of Material"
+                  name="Description_of_Material"
+                  value={formData.Description_of_Material}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <select
-                className="form-dropdown"
-                value={supplierName}
-                onChange={(event) => {
-                  if (event.target.value === "Select supplier") {
-                    setSupplierName("");
-                    // setSupplierAddress("");
-                    // setSupplierContact("");
-                  } else {
-                    const selectedSupplier = event.target.value;
-                    // const selectedSupplierObject = all.find(
-                    //   (supp) => supp.supplier === selectedSupplier
-                    // );
-                    setSupplierName(selectedSupplier);
-                    // setSupplierAddress(selectedSupplierObject.address);
-                    // setSupplierContact(selectedSupplierObject.contact);
-                  }
-                }}
-              >
-                <option>Select supplier</option>
-                {all.map((supp) => (
-                  <option key={supp.supplier}>{supp.supplier}</option>
-                ))}
-              </select>
+              <div className="flex-form">
+                <p className="form-text2">Supplier</p>
+                <select
+                  className="form-dropdown"
+                  value={supplierName}
+                  onChange={(event) => {
+                    if (event.target.value === "Select supplier") {
+                      setSupplierName("");
+                      // setSupplierAddress("");
+                      // setSupplierContact("");
+                    } else {
+                      const selectedSupplier = event.target.value;
+                      // const selectedSupplierObject = all.find(
+                      //   (supp) => supp.supplier === selectedSupplier
+                      // );
+                      setSupplierName(selectedSupplier);
+                      // setSupplierAddress(selectedSupplierObject.address);
+                      // setSupplierContact(selectedSupplierObject.contact);
+                    }
+                  }}
+                >
+                  <option>Select supplier</option>
+                  {all.map((supp) => (
+                    <option key={supp.supplier}>{supp.supplier}</option>
+                  ))}
+                </select>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Bill No"
-                name="Bill_No"
-                value={formData.Bill_No}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Bill No</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Bill No"
+                  name="Bill_No"
+                  value={formData.Bill_No}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Date in dd/mm/yyyy fromat"
-                name="Date"
-                value={formData.Date}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Date</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Date in dd/mm/yyyy fromat"
+                  name="Date"
+                  value={formData.Date}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Amount"
-                name="Amount"
-                value={formData.Amount}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Amount</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Amount"
+                  name="Amount"
+                  value={formData.Amount}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Material"
-                name="Material"
-                value={formData.Material}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Material</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Material"
+                  name="Material"
+                  value={formData.Material}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Receiving Date in dd/mm/yyyy format"
-                name="Receiving_Year"
-                value={formData.Receiving_Year}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Receiving Date</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Receiving Date in dd/mm/yyyy format"
+                  name="Receiving_Year"
+                  value={formData.Receiving_Year}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Year"
-                name="Year"
-                value={formData.Year}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Receiving Date</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Year"
+                  name="Year"
+                  value={formData.Year}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <input
-                className="pc-form-box"
-                type="text"
-                placeholder="Enter Yearly expense"
-                name="Yearly_expense"
-                value={formData.Yearly_expense}
-                onChange={handleInputChange}
-              ></input>
+              <div className="flex-form">
+                <p className="form-text2">Receiving Date</p>
+                <input
+                  className="pc-form-box"
+                  type="text"
+                  placeholder="Enter Yearly expense"
+                  name="Yearly_expense"
+                  value={formData.Yearly_expense}
+                  onChange={handleInputChange}
+                ></input>
+              </div>
 
-              <button
-                type="submit"
-                className="pc-form-box"
-                id="submit-btn"
-                onClick={handleSubmit}
-              >
-                Submit
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  className="pc-form-box new"
+                  id="submit-btn"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              </div>
             </form>
           </div>
         </div>

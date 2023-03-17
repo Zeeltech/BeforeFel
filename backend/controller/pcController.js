@@ -643,6 +643,7 @@ const formpurchase = async (req, res) => {
     res.json({ message: `Data inserted in purchase database` });
   } catch (error) {
     console.log(error);
+    res.json({ message: `Duplicate data` });
   }
 };
 // =================================================================================
@@ -685,6 +686,7 @@ const formrepair = async (req, res) => {
     res.json({ message: `Data inserted in recurring database` });
   } catch (error) {
     console.log(error);
+    res.json({ message: `Duplicate data` });
   }
 };
 
