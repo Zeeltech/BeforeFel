@@ -927,9 +927,9 @@ const deleteRow = async (req, res) => {
 const deleteRowRepair = async (req, res) => {
   try {
     const { id } = req.body;
-    // console.log(id);
+    console.log(id);
     const row = await Recurring.findOne({ _id: id });
-    // console.log(row);
+    console.log(row);
     if (!id) {
       return res.status(400).json({ message: "Data not found" });
     }
@@ -940,6 +940,26 @@ const deleteRowRepair = async (req, res) => {
     console.log(error);
   }
 };
+const deleteRowRepairMany = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const rows = await Recurring.find({ _id: { $in: ids } });
+
+    if (!rows) {
+      return res.status(400).json({ message: "Data not found" });
+    }
+
+    // loop through the rows and delete each document
+    for (let i = 0; i < rows.length; i++) {
+      await rows[i].remove();
+    }
+
+    return res.status(404).json({ message: "Data deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 
 module.exports = {
   loginPc,
@@ -965,4 +985,5 @@ module.exports = {
   searchRepair,
   deleteRow,
   deleteRowRepair,
+  deleteRowRepairMany,
 };

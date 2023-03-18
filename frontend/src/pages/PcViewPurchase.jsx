@@ -311,7 +311,6 @@ const PcViewPurchase = () => {
                               className="form-dropdown-sm"
                               value={supplier}
                               onChange={(event) => {
-                                // console.log(event.target.value);
                                 if (event.target.value === "Select supplier") {
                                   setSupplier("");
                                 } else {

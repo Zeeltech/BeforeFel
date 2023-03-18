@@ -546,3 +546,10 @@ span {
   justify-content: center;
   align-items: center;
 }
+.checkbox-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+

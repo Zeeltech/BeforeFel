@@ -31,6 +31,7 @@ const {
   searchRepair,
   deleteRow,
   deleteRowRepair,
+  deleteRowRepairMany,
 } = require("../controller/pcController");
 
 router.post("/signup", registerPc);
@@ -59,6 +60,7 @@ router.get("/searchrepair", searchRepair);
 
 router.post("/deleterow", deleteRow);
 router.post("/deleterowrepair", deleteRowRepair);
+router.post("/deleterowrepairmany", deleteRowRepairMany);
 
 // ===============================================================================
 // upload purchase file

@@ -6,6 +6,7 @@ import PcSidebarRepair from "../components/PcSidebarRepair";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
 const PcViewRepair = () => {
+  const [selectedRows, setSelectedRows] = useState([]);
   const [files, setFiles] = useState([]);
   const [department, setDepartment] = useState("");
   const [sr_no, setSr_No] = useState("");
@@ -57,6 +58,22 @@ const PcViewRepair = () => {
       await axios
         .post("http://localhost:5000/pc/deleterowrepair", {
           id: id,
+        })
+        .then((res) => {
+          window.location.reload("user/pc/repair/view");
+        })
+        .catch((err) => {
+          window.location.reload("user/pc/repair/view");
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleDeleteMany = async () => {
+    try {
+      await axios
+        .post("http://localhost:5000/pc/deleterowrepairmany", {
+          ids: selectedRows,
         })
         .then((res) => {
           window.location.reload("user/pc/repair/view");
@@ -136,6 +153,8 @@ const PcViewRepair = () => {
                     <table className="min-w-max bg-white w-full table-auto">
                       <thead>
                         <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                          <th className="py-3 px-6 text-center"></th>
+                          <th className="py-3 px-6 text-center"></th>
                           <th className="py-3 px-6 text-center">Sr_No</th>
                           <th className="py-3 px-6 text-center">
                             Description_of_Material
@@ -159,6 +178,30 @@ const PcViewRepair = () => {
                       </thead>
                       <thead>
                         <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                          <th className="py-3 px-6 text-center"></th>
+                          <th className="py-3 px-6 text-center">
+                            <div className="checkbox-flex">
+                              <button
+                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                onClick={handleDeleteMany}
+                                disabled={selectedRows.length === 0}
+                              >
+                                Delete
+                              </button>
+                              <input
+                                type="checkbox"
+                                style={{marginTop: "4px"}}
+                                checked={selectedRows.length === files.length}
+                                onChange={(e) =>
+                                  setSelectedRows(
+                                    e.target.checked
+                                      ? files.map((file) => file._id)
+                                      : []
+                                  )
+                                }
+                              />
+                            </div>
+                          </th>
                           <th className="py-3 px-6 text-center">
                             <input
                               className="form-box-sm"
@@ -297,6 +340,40 @@ const PcViewRepair = () => {
                         <>
                           <tbody className="text-gray-600 text-sm font-light">
                             <tr className="border-b border-gray-200 hover:bg-gray-100">
+                              <td
+                                className="py-3 px-6 text-center"
+                                style={{ cursor: "pointer" }}
+                              >
+                                <div
+                                  className="transform hover:text-red-500 hover:scale-110"
+                                  onClick={() => handleDelete(file._id)}
+                                >
+                                  <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
+                                  Delete
+                                </div>
+                              </td>
+                              <td className="py-3 px-6 text-center">
+                                <div>
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedRows.includes(file._id)}
+                                    onChange={(e) =>
+                                      setSelectedRows((prevSelectedRows) => {
+                                        if (e.target.checked) {
+                                          return [
+                                            ...prevSelectedRows,
+                                            file._id,
+                                          ];
+                                        } else {
+                                          return prevSelectedRows.filter(
+                                            (id) => id !== file._id
+                                          );
+                                        }
+                                      })
+                                    }
+                                  />
+                                </div>
+                              </td>
                               <td className="py-3 px-6 text-center">
                                 <div>{file.Sr_No}</div>
                               </td>
@@ -336,18 +413,6 @@ const PcViewRepair = () => {
                               </td>
                               <td className="py-3 px-6 text-center">
                                 <div>{file.Department}</div>
-                              </td>
-                              <td
-                                className="py-3 px-6 text-center"
-                                style={{ cursor: "pointer" }}
-                              >
-                                <div
-                                  className="transform hover:text-red-500 hover:scale-110"
-                                  onClick={() => handleDelete(file._id)}
-                                >
-                                  <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
-                                  Delete
-                                </div>
                               </td>
                             </tr>
                           </tbody>
