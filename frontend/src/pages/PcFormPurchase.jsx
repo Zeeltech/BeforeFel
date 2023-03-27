@@ -78,8 +78,7 @@ function PcFormPurchase() {
           toast.success("Form submitted successfully");
         } else if (response.data.message === "Duplicate data") {
           toast.error("Duplicate data");
-        }
-        else{
+        } else {
           toast.error("Error");
         }
       })
@@ -245,9 +244,9 @@ function PcFormPurchase() {
                 <p className="form-text2">Supplier</p>
                 <select
                   className="form-dropdown"
-                  value={supplierName}
                   onChange={(event) => {
                     // console.log(event.target.value);
+                    console.log(event.target.value);
                     if (event.target.value === "Select supplier") {
                       setSupplierName("");
                       setSupplierAddress("");
@@ -255,9 +254,10 @@ function PcFormPurchase() {
                     } else {
                       const selectedSupplier = event.target.value;
                       const selectedSupplierObject = all.find(
-                        (supp) => supp.supplier === selectedSupplier
+                        (supp) => supp._id === selectedSupplier
                       );
-                      setSupplierName(selectedSupplier);
+                      console.log(selectedSupplierObject);
+                      setSupplierName(selectedSupplierObject.supplier);
                       setSupplierAddress(selectedSupplierObject.address);
                       setSupplierContact(selectedSupplierObject.contact);
                     }
@@ -265,7 +265,9 @@ function PcFormPurchase() {
                 >
                   <option>Select supplier</option>
                   {all.map((supp) => (
-                    <option key={supp.supplier}>{supp.supplier}</option>
+                    <option key={supp._id} value={supp._id}>
+                      {supp.supplier} ({supp.address})
+                    </option>
                   ))}
                 </select>
               </div>

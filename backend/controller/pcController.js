@@ -206,6 +206,11 @@ const addSupplier = async (req, res) => {
   try {
     const { supplier, address, contact } = req.body;
 
+    const existingSupplier = await Supplier.findOne({ supplier, address });
+    if (existingSupplier) {
+      return res.json({ message: "Duplicate" });
+    }
+
     await Supplier.create({
       supplier,
       address,
@@ -214,8 +219,8 @@ const addSupplier = async (req, res) => {
 
     res.json({ message: `Supplier added + ${supplier}` });
   } catch (error) {
-    res.json({ message: "Duplicate" });
     console.log(error);
+    res.json({ message: "Duplicate" });
   }
 };
 
@@ -226,7 +231,7 @@ const getSupplier = async (req, res) => {
       supp: supp,
     });
   } catch (error) {
-    console.log(error);
+    /* console.log(error); */
   }
 };
 
@@ -297,11 +302,17 @@ const uploadFile = async (req, res) => {
             P_JSON[p].Supplier_Name !== undefined
           ) {
             try {
-              await Supplier.create({
+              const existingSupplier = await Supplier.findOne({
                 supplier: P_JSON[p].Supplier_Name,
                 address: P_JSON[p].Address,
-                contact: P_JSON[p].Contact,
               });
+              if (!existingSupplier) {
+                await Supplier.create({
+                  supplier: P_JSON[p].Supplier_Name,
+                  address: P_JSON[p].Address,
+                  contact: P_JSON[p].Contact,
+                });
+              }
             } catch (error) {
               console.log(error);
             }
@@ -310,12 +321,48 @@ const uploadFile = async (req, res) => {
           P_JSON[p].Department = department;
           console.log(P_JSON[p].Department);
         }
+        var allrecord = [];
+        for (var i = 0; i < P_JSON.length; i++) {
+          allrecord[i] = P_JSON[i].Sr_No;
+        }
+        var pp = "";
         try {
-          await Purchase.insertMany(P_JSON, { ordered: false });
-          res.status(200).json({ message: "Data entered successfully" });
+          const pp = await Purchase.insertMany(P_JSON, { ordered: false });
+          var printline = [];
+          for (var i = 0; i < pp.length; i++) {
+            printline[i] = pp[i].Sr_No;
+          }
+          console.log(pp);
+          res
+            .status(200)
+            .json({ message: "Data entered successfully", ps: printline });
         } catch (error) {
-          console.log(error);
-          res.send({ message: "Duplicate key found" });
+          if (error.writeErrors) {
+            const duplicateErrors = error.writeErrors;
+
+            const pr = [];
+            var print = "Sr_no ";
+            for (var i = 0; i < duplicateErrors.length; i++) {
+              print = print + duplicateErrors[i].err.op.Sr_No;
+              pr[i] = duplicateErrors[i].err.op.Sr_No;
+              if (i !== duplicateErrors.length - 1) {
+                print = print + " , ";
+              }
+            }
+            const allrec = Array.from(allrecord, (x) => `${x}`);
+
+            console.log(pr);
+            console.log(allrec);
+            pp = allrec.filter((x) => !pr.includes(x));
+            console.log("pppp" + pp);
+            print =
+              print + " has been failed to entered as duplicate records found";
+            res.send({
+              message: "Duplicate key found",
+              pe: print,
+              ps: pp,
+            });
+          }
         }
 
         chmodr("./", 0o777, (err) => {
@@ -495,11 +542,17 @@ const uploadRepairFile = async (req, res) => {
           P_JSON[p].Name_Of_Supplier !== undefined
         ) {
           try {
-            await Supplier.create({
-              supplier: P_JSON[p].Name_Of_Supplier,
-              address: "",
-              contact: "",
+            const existingSupplier = await Supplier.findOne({
+              supplier: P_JSON[p].Supplier_Name,
+              address: P_JSON[p].Address,
             });
+            if (!existingSupplier) {
+              await Supplier.create({
+                supplier: P_JSON[p].Supplier_Name,
+                address: P_JSON[p].Address,
+                contact: P_JSON[p].Contact,
+              });
+            }
           } catch (error) {
             console.log(error);
           }
