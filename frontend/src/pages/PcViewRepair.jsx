@@ -21,6 +21,7 @@ const PcViewRepair = () => {
   const [recyear, setRecyear] = useState("");
   const [expenselesser, setExpenselesser] = useState("");
   const [expensegreater, setExpensegreater] = useState("");
+  const [confirmDelete, setConfirmDelete] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -52,8 +53,8 @@ const PcViewRepair = () => {
     link.click();
     link.remove();
   };
-
   const handleDelete = async (id) => {
+    setConfirmDelete(false);
     try {
       await axios
         .post("http://localhost:5000/pc/deleterowrepair", {
@@ -190,7 +191,7 @@ const PcViewRepair = () => {
                               </button>
                               <input
                                 type="checkbox"
-                                style={{marginTop: "4px"}}
+                                style={{ marginTop: "4px" }}
                                 checked={selectedRows.length === files.length}
                                 onChange={(e) =>
                                   setSelectedRows(
@@ -346,12 +347,44 @@ const PcViewRepair = () => {
                               >
                                 <div
                                   className="transform hover:text-red-500 hover:scale-110"
-                                  onClick={() => handleDelete(file._id)}
+                                  onClick={() => setConfirmDelete(true)}
                                 >
                                   <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
-                                  Delete
                                 </div>
+                                {confirmDelete ? (
+                                  <>
+                                    <td
+                                      className="py-3 px-6 text-center"
+                                      style={{ cursor: "pointer" }}
+                                    >
+                                      <div className="flex-row">
+                                        <div
+                                          onClick={() => handleDelete(file._id)}
+                                        >
+                                          <div
+                                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                            style={{ marginRight: "10px" }}
+                                          >
+                                            Delete
+                                          </div>
+                                        </div>
+                                        <div
+                                          onClick={() =>
+                                            setConfirmDelete(false)
+                                          }
+                                        >
+                                          <div className="bg-neutral-500 text-white px-4 py-2 rounded-md hover:bg-neutral-600">
+                                            Cancel
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                  </>
+                                ) : (
+                                  <></>
+                                )}
                               </td>
+
                               <td className="py-3 px-6 text-center">
                                 <div>
                                   <input

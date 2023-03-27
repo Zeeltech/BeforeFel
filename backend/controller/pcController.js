@@ -552,7 +552,8 @@ const downloadrepairfile = async (req, res) => {
   const expenselesser = req.query.expenselesser;
   const expensegreater = req.query.expensegreater;
 
-  console.log("Amount less " + amountlesser);
+  // console.log("Amount less " + amountlesser);
+
 
   const query = {};
   if (sr_no) {
@@ -846,7 +847,7 @@ const searchRepair = async (req, res) => {
   const expenselesser = req.query.expenselesser;
   const expensegreater = req.query.expensegreater;
 
-  console.log("Amount less " + amountlesser);
+  // console.log("Amount less " + amountlesser);
 
   const query = {};
   if (sr_no) {
