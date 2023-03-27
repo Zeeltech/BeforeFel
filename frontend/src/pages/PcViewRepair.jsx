@@ -4,6 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HeaderPc from "../components/HeaderPc";
 import PcSidebarRepair from "../components/PcSidebarRepair";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Oval } from "react-loader-spinner";
 
 const PcViewRepair = () => {
   const [selectedRows, setSelectedRows] = useState([]);
@@ -21,7 +22,15 @@ const PcViewRepair = () => {
   const [recyear, setRecyear] = useState("");
   const [expenselesser, setExpenselesser] = useState("");
   const [expensegreater, setExpensegreater] = useState("");
-  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const [confirmDelete, setConfirmDelete] = useState(false); //Used in handleDeleteClick
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null); //Used in handleDeleteClick
+
+  const handleDeleteClick = (fileId, confirmDeleteValue) => {
+    setConfirmDelete(confirmDeleteValue);
+    setConfirmDeleteId(fileId);
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -88,6 +97,8 @@ const PcViewRepair = () => {
   };
 
   useEffect(() => {
+    setLoading(true);
+
     axios
       .get("http://localhost:5000/pc/getsupp", {
         withCredentials: true,
@@ -120,6 +131,7 @@ const PcViewRepair = () => {
       })
       .then((response) => {
         setFiles(response.data.files);
+        setLoading(false);
       });
   }, [
     department,
@@ -337,120 +349,164 @@ const PcViewRepair = () => {
                           <th className="py-3 px-6 text-center"></th>
                         </tr>
                       </thead>
-                      {files.map((file) => (
+                      {loading ? (
                         <>
                           <tbody className="text-gray-600 text-sm font-light">
                             <tr className="border-b border-gray-200 hover:bg-gray-100">
+                              <td></td>
+                              <td></td>
+                              <td></td>
+                              <td></td>
                               <td
                                 className="py-3 px-6 text-center"
                                 style={{ cursor: "pointer" }}
                               >
-                                <div
-                                  className="transform hover:text-red-500 hover:scale-110"
-                                  onClick={() => setConfirmDelete(true)}
-                                >
-                                  <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
-                                </div>
-                                {confirmDelete ? (
-                                  <>
-                                    <td
-                                      className="py-3 px-6 text-center"
-                                      style={{ cursor: "pointer" }}
-                                    >
-                                      <div className="flex-row">
-                                        <div
-                                          onClick={() => handleDelete(file._id)}
-                                        >
-                                          <div
-                                            className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
-                                            style={{ marginRight: "10px" }}
-                                          >
-                                            Delete
-                                          </div>
-                                        </div>
-                                        <div
-                                          onClick={() =>
-                                            setConfirmDelete(false)
-                                          }
-                                        >
-                                          <div className="bg-neutral-500 text-white px-4 py-2 rounded-md hover:bg-neutral-600">
-                                            Cancel
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </td>
-                                  </>
-                                ) : (
-                                  <></>
-                                )}
-                              </td>
-
-                              <td className="py-3 px-6 text-center">
                                 <div>
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedRows.includes(file._id)}
-                                    onChange={(e) =>
-                                      setSelectedRows((prevSelectedRows) => {
-                                        if (e.target.checked) {
-                                          return [
-                                            ...prevSelectedRows,
-                                            file._id,
-                                          ];
-                                        } else {
-                                          return prevSelectedRows.filter(
-                                            (id) => id !== file._id
-                                          );
-                                        }
-                                      })
-                                    }
+                                  <Oval
+                                    height={40}
+                                    width={40}
+                                    color="#4fa94d"
+                                    wrapperStyle={{}}
+                                    wrapperClass=""
+                                    visible={true}
+                                    ariaLabel="oval-loading"
+                                    secondaryColor="#4fa94d"
+                                    strokeWidth={2}
+                                    strokeWidthSecondary={2}
                                   />
                                 </div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Sr_No}</div>
-                              </td>
-                              <td
-                                className="py-3 px-6 text-center"
-                                style={{
-                                  wordBreak: "break-all",
-                                  overflowWrap: "break-word",
-                                  maxWidth: "300px",
-                                }}
-                              >
-                                <div>{file.Description_of_Material}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Name_Of_Supplier}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Bill_No}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Date}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Amount}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Material}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Receiving_Year}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Year}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Yearly_expense}</div>
-                              </td>
-                              <td className="py-3 px-6 text-center">
-                                <div>{file.Department}</div>
                               </td>
                             </tr>
                           </tbody>
                         </>
-                      ))}
+                      ) : (
+                        <>
+                          {files.map((file) => (
+                            <>
+                              <tbody className="text-gray-600 text-sm font-light">
+                                <tr className="border-b border-gray-200 hover:bg-gray-100">
+                                  <td
+                                    className="py-3 px-6 text-center"
+                                    style={{ cursor: "pointer" }}
+                                  >
+                                    <div
+                                      className="transform hover:text-red-500 hover:scale-110"
+                                      // onClick={() => setConfirmDelete(true)}
+                                      onClick={() =>
+                                        handleDeleteClick(file._id, true)
+                                      }
+                                    >
+                                      <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
+                                    </div>
+                                    {confirmDelete &&
+                                    confirmDeleteId === file._id ? (
+                                      <>
+                                        <td
+                                          className="py-3 px-6 text-center"
+                                          style={{ cursor: "pointer" }}
+                                        >
+                                          <div className="flex-row">
+                                            <div
+                                              onClick={() =>
+                                                handleDelete(file._id)
+                                              }
+                                            >
+                                              <div
+                                                className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+                                                style={{ marginRight: "10px" }}
+                                              >
+                                                Delete
+                                              </div>
+                                            </div>
+                                            <div
+                                              onClick={() =>
+                                                setConfirmDelete(false)
+                                              }
+                                            >
+                                              <div className="bg-neutral-500 text-white px-4 py-2 rounded-md hover:bg-neutral-600">
+                                                Cancel
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </>
+                                    ) : (
+                                      <></>
+                                    )}
+                                  </td>
+
+                                  <td className="py-3 px-6 text-center">
+                                    <div>
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedRows.includes(
+                                          file._id
+                                        )}
+                                        onChange={(e) =>
+                                          setSelectedRows(
+                                            (prevSelectedRows) => {
+                                              if (e.target.checked) {
+                                                return [
+                                                  ...prevSelectedRows,
+                                                  file._id,
+                                                ];
+                                              } else {
+                                                return prevSelectedRows.filter(
+                                                  (id) => id !== file._id
+                                                );
+                                              }
+                                            }
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Sr_No}</div>
+                                  </td>
+                                  <td
+                                    className="py-3 px-6 text-center"
+                                    style={{
+                                      wordBreak: "break-all",
+                                      overflowWrap: "break-word",
+                                      maxWidth: "300px",
+                                    }}
+                                  >
+                                    <div>{file.Description_of_Material}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Name_Of_Supplier}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Bill_No}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Date}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Amount}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Material}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Receiving_Year}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Year}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Yearly_expense}</div>
+                                  </td>
+                                  <td className="py-3 px-6 text-center">
+                                    <div>{file.Department}</div>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </>
+                          ))}
+                        </>
+                      )}
                     </table>
                   </div>
                 </div>
