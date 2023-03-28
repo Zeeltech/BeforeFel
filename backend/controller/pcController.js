@@ -607,7 +607,6 @@ const downloadrepairfile = async (req, res) => {
 
   // console.log("Amount less " + amountlesser);
 
-
   const query = {};
   if (sr_no) {
     query.Sr_No = sr_no;
@@ -798,6 +797,54 @@ const formrepair = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ message: `Duplicate data` });
+  }
+};
+
+const updaterepair = async (req, res) => {
+  try {
+    const {
+      _id,
+      Sr_No,
+      Description_of_Material,
+      Name_Of_Supplier,
+      Bill_No,
+      Date,
+      Amount,
+      Material,
+      Receiving_Year,
+      Year,
+      Yearly_expense,
+      // Address,
+      // Contact,
+      Department,
+    } = req.body;
+
+    const updatedDocument = await Recurring.findByIdAndUpdate(
+      _id,
+      {
+        Sr_No,
+        Description_of_Material,
+        Name_Of_Supplier,
+        Bill_No,
+        Date,
+        Amount,
+        Material,
+        Receiving_Year,
+        Year,
+        Yearly_expense,
+        Department,
+      },
+      { new: true }
+    );
+
+    if (!updatedDocument) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    res.json({ message: `Data inserted in recurring database` });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -1014,7 +1061,6 @@ const deleteRowRepairMany = async (req, res) => {
   }
 };
 
-
 module.exports = {
   loginPc,
   registerPc,
@@ -1040,4 +1086,5 @@ module.exports = {
   deleteRow,
   deleteRowRepair,
   deleteRowRepairMany,
+  updaterepair,
 };
