@@ -15,6 +15,9 @@ const {
   downloadrepairfile,
   getrepair,
   getpurchase,
+  searchPurchase,
+  deleteRow,
+  getSupplier,
 } = require("../controller/deanController");
 
 router.post("/login", loginDean);
@@ -31,5 +34,11 @@ router.get("/downloadfile", downloadfile);
 router.get("/downloadrepairfile", downloadrepairfile);
 router.get("/getpurchase", getpurchase);
 router.get("/getrepair", getrepair);
+
+router.get("/getsupp", getSupplier);
+
+router.get("/searchpurchase", searchPurchase);
+
+router.post("/deleterow", deleteRow);
 
 module.exports = router;
