@@ -283,7 +283,6 @@ input:focus::placeholder {
   margin: auto;
 }
 
-
 .icon:hover {
   color: #14c540;
 }
@@ -505,10 +504,7 @@ span {
   border-radius: 8px;
   width: 500px;
 }
-.loading {
-  display: inline-block;
-  margin: 100px auto;
-}
+
 /* =========================================================== */
 /* search  */
 
@@ -554,7 +550,32 @@ span {
   align-items: center;
 }
 
-
 .tdss {
   padding: 0px 30px;
+}
+/* ======================================================= */
+/* PopUp */
+.main-popup {
+  background-color: rgba(215, 220, 222, 0.71);
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+}
+.popup {
+  height: 400px;
+  width: 50%;
+  background-color: white;
+  position: absolute;
+  top: 15%;
+  right: 25%;
+  border-radius: 10px;
+  padding: 10px;
+}
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px 0 15px;
+  /* border-bottom: 2px solid black; */
 }

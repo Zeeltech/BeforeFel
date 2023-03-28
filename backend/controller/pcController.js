@@ -605,7 +605,7 @@ const downloadrepairfile = async (req, res) => {
   const expenselesser = req.query.expenselesser;
   const expensegreater = req.query.expensegreater;
 
-  console.log("Amount less " + amountlesser);
+  // console.log("Amount less " + amountlesser);
 
   const query = {};
   if (sr_no) {
@@ -800,6 +800,54 @@ const formrepair = async (req, res) => {
   }
 };
 
+const updaterepair = async (req, res) => {
+  try {
+    const {
+      _id,
+      Sr_No,
+      Description_of_Material,
+      Name_Of_Supplier,
+      Bill_No,
+      Date,
+      Amount,
+      Material,
+      Receiving_Year,
+      Year,
+      Yearly_expense,
+      // Address,
+      // Contact,
+      Department,
+    } = req.body;
+
+    const updatedDocument = await Recurring.findByIdAndUpdate(
+      _id,
+      {
+        Sr_No,
+        Description_of_Material,
+        Name_Of_Supplier,
+        Bill_No,
+        Date,
+        Amount,
+        Material,
+        Receiving_Year,
+        Year,
+        Yearly_expense,
+        Department,
+      },
+      { new: true }
+    );
+
+    if (!updatedDocument) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    res.json({ message: `Data inserted in recurring database` });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
 const searchPurchase = async (req, res) => {
   const department = req.query.department;
   const sr_no = req.query.sr_no;
@@ -899,7 +947,7 @@ const searchRepair = async (req, res) => {
   const expenselesser = req.query.expenselesser;
   const expensegreater = req.query.expensegreater;
 
-  console.log("Amount less " + amountlesser);
+  // console.log("Amount less " + amountlesser);
 
   const query = {};
   if (sr_no) {
@@ -1013,7 +1061,6 @@ const deleteRowRepairMany = async (req, res) => {
   }
 };
 
-
 module.exports = {
   loginPc,
   registerPc,
@@ -1039,4 +1086,5 @@ module.exports = {
   deleteRow,
   deleteRowRepair,
   deleteRowRepairMany,
+  updaterepair,
 };

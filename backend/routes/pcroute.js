@@ -27,6 +27,7 @@ const {
   getrepair,
   formpurchase,
   formrepair,
+  updaterepair,
   searchPurchase,
   searchRepair,
   deleteRow,
@@ -54,6 +55,8 @@ router.get("/getrepair", getrepair);
 
 router.post("/formpurchase", formpurchase);
 router.post("/formrepair", formrepair);
+
+router.post("/updaterepair", updaterepair);
 
 router.get("/searchpurchase", searchPurchase);
 router.get("/searchrepair", searchRepair);
