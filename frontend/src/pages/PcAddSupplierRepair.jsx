@@ -43,9 +43,13 @@ function PcAddSupplierRepair() {
   const suppDelete = async (event, supplier) => {
     event.preventDefault();
     await axios
-      .post("http://localhost:5000/pc/deletesupp", {
-        supplier: supplier,
-      })
+      .post(
+        "http://localhost:5000/pc/deletesupp",
+        {
+          supplier: supplier,
+        },
+        { withCredentials: true }
+      )
       .then((res) => {
         window.location.reload("user/pc/dashboard");
       })

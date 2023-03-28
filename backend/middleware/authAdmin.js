@@ -5,7 +5,9 @@ const Admin = require("../models/adminModel");
 const protectAdmin = asyncHandler(async (req, res, next) => {
   try {
     const token = req.cookies.jwtokenadmin;
-
+    if (!token) {
+      throw new Error("Authentication failed! Token not provided.");
+    }
     const verify_token = jwt.verify(
       token,
       process.env.JWT_SECRET

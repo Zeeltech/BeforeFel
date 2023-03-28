@@ -39,6 +39,7 @@ const PcUploadPurchase = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         params: { department: department },
       })
       .then((response) => {

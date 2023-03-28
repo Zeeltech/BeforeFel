@@ -5,7 +5,9 @@ const PurchaseController = require("../models/pcModel");
 const protectPc = asyncHandler(async (req, res, next) => {
   try {
     const token = req.cookies.jwtokenpc;
-
+      if (!token) {
+        throw new Error("Authentication failed! Token not provided.");
+      }
     const verify_token = jwt.verify(
       token,
       process.env.JWT_SECRET
@@ -27,7 +29,6 @@ const protectPc = asyncHandler(async (req, res, next) => {
         next();
       } */
     );
-    /*     console.log(verify_token._id); */
     root_user = await PurchaseController.findOne({
       _id: verify_token._id,
       token: token,

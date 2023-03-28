@@ -22,6 +22,7 @@ const PcDownloadRepair = () => {
       "http://localhost:5000/pc/downloadrepairfile",
       {
         responseType: "blob",
+        withCredentials: true,
         params: {
           department: department,
         },

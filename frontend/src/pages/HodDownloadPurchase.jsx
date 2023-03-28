@@ -20,6 +20,7 @@ const HodDownloadPurchase = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await axios.get("http://localhost:5000/hod/downloadfile", {
+      withCredentials: true,
       responseType: "blob",
       params: {
         department: department,

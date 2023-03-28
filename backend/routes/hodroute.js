@@ -28,20 +28,20 @@ router.post("/status", makeActive);
 router.get("/dashboard", protectHod, (req, res) => {
   res.json({ message: "Authorized" });
 });
-router.get("/logout", logoutHod);
+router.get("/logout", protectHod, logoutHod);
 router.get("/getme", protectHod, getHodInfo);
-router.post("/delete", deleteHod);
-router.get("/getdept", getdept);
+router.post("/delete", protectHod, deleteHod);
+router.get("/getdept", protectHod, getdept);
 
-router.get("/getpurchase", getpurchase);
-router.get("/getrepair", getrepair);
+router.get("/getpurchase", protectHod, getpurchase);
+router.get("/getrepair", protectHod, getrepair);
 
-router.get("/downloadfile", downloadfile);
+router.get("/downloadfile", protectHod, downloadfile);
 router.get("/downloadrepairfile", downloadrepairfile);
 
-router.get("/searchpurchase", searchPurchase);
-router.get("/searchrepair", searchRepair);
+router.get("/searchpurchase", protectHod, searchPurchase);
+router.get("/searchrepair", protectHod, searchRepair);
 
-router.get("/getsupp", getSupplier);
+router.get("/getsupp", protectHod, getSupplier);
 
 module.exports = router;

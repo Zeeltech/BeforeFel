@@ -27,6 +27,7 @@ const HodViewPurchase = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await axios.get("http://localhost:5000/hod/downloadfile", {
+      withCredentials: true,  
       responseType: "blob",
       params: {
         sr_no: sr_no,
@@ -71,7 +72,7 @@ const HodViewPurchase = () => {
           withCredentials: true,
           params: {
             sr_no: sr_no,
-            department: department,
+            department: response.data.department,
             academic_year: academic_year,
             description: description,
             bill_no: bill_no,

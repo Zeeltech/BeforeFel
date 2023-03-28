@@ -39,9 +39,10 @@ const PcUploadRepair = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
         params: { department: department },
       })
-      .then((response ) => {
+      .then((response) => {
         console.log(response);
         if (response.data.message === "Duplicate key found") {
           toast.error(response.data.pe);

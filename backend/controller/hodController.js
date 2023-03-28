@@ -198,6 +198,7 @@ const getdept = async (req, res) => {
 };
 
 const downloadfile = async (req, res) => {
+  const department = req.query.department;
   const sr_no = req.query.sr_no;
   const price = req.query.price;
   const academic_year = req.query.academic_year;
@@ -218,6 +219,9 @@ const downloadfile = async (req, res) => {
   }
   if (price) {
     query.Price = price;
+  }
+  if (department) {
+    query.Department = department;
   }
   if (academic_year) {
     query.Academic_Year = academic_year;

@@ -142,6 +142,7 @@ const PcViewPurchase = () => {
     event.preventDefault();
     const response = await axios.get("http://localhost:5000/pc/downloadfile", {
       responseType: "blob",
+      withCredentials: true,
       params: {
         department: department,
         sr_no: sr_no,
@@ -171,6 +172,7 @@ const PcViewPurchase = () => {
     try {
       await axios
         .post("http://localhost:5000/pc/deleterow", {
+          withCredentials: true,
           id: id,
         })
         .then((res) => {
@@ -188,6 +190,7 @@ const PcViewPurchase = () => {
     try {
       await axios
         .post("http://localhost:5000/pc/deleterowmany", {
+          withCredentials: true,
           ids: selectedRows,
         })
         .then((res) => {

@@ -5,7 +5,9 @@ const Dean = require("../models/deanModel");
 const protectDean = asyncHandler(async (req, res, next) => {
   try {
     const token = req.cookies.jwtokendean;
-
+    if (!token) {
+      throw new Error("Authentication failed! Token not provided.");
+    }
     /* jwt.verify(token, process.env.JWT_SECRET, (err, verify_token) => {
       if (err) {
         console.log(err);
