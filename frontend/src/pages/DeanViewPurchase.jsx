@@ -55,23 +55,6 @@ const DeanViewPurchase = () => {
     link.remove();
   };
 
-  const handleDelete = async (id) => {
-    try {
-      await axios
-        .post("http://localhost:5000/dean/deleterow", {
-          id: id,
-        })
-        .then((res) => {
-          window.location.reload("user/dean/purchase");
-        })
-        .catch((err) => {
-          window.location.reload("user/dean/purchase");
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     setLoading(true);
     axios
@@ -85,6 +68,7 @@ const DeanViewPurchase = () => {
         });
       })
       .then((response) => {
+        setDepartment(response.data.department);
         return axios.get(`http://localhost:5000/dean/searchpurchase`, {
           withCredentials: true,
           params: {
@@ -388,18 +372,6 @@ const DeanViewPurchase = () => {
                               </td>
                               <td className="py-3 px-6 text-center">
                                 <div>{file.Department}</div>
-                              </td>
-                              <td
-                                className="py-3 px-6 text-center"
-                                style={{ cursor: "pointer" }}
-                              >
-                                <div
-                                  className="transform hover:text-red-500 hover:scale-110"
-                                  onClick={() => handleDelete(file._id)}
-                                >
-                                  <RiDeleteBin6Line className="table-icons"></RiDeleteBin6Line>
-                                  Delete
-                                </div>
                               </td>
                             </tr>
                           </tbody>

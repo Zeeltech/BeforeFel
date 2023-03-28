@@ -16,6 +16,9 @@ const {
   getpurchase,
   downloadfile,
   downloadrepairfile,
+  searchPurchase,
+  searchRepair,
+  getSupplier,
 } = require("../controller/hodController");
 
 router.post("/signup", registerHod);
@@ -35,4 +38,10 @@ router.get("/getrepair", getrepair);
 
 router.get("/downloadfile", downloadfile);
 router.get("/downloadrepairfile", downloadrepairfile);
+
+router.get("/searchpurchase", searchPurchase);
+router.get("/searchrepair", searchRepair);
+
+router.get("/getsupp", getSupplier);
+
 module.exports = router;

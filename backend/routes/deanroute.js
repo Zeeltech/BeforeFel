@@ -16,8 +16,8 @@ const {
   getrepair,
   getpurchase,
   searchPurchase,
-  deleteRow,
   getSupplier,
+  searchRepair,
 } = require("../controller/deanController");
 
 router.post("/login", loginDean);
@@ -38,7 +38,6 @@ router.get("/getrepair", getrepair);
 router.get("/getsupp", getSupplier);
 
 router.get("/searchpurchase", searchPurchase);
-
-router.post("/deleterow", deleteRow);
+router.get("/searchrepair", searchRepair);
 
 module.exports = router;

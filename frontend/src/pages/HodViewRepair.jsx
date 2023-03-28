@@ -1,32 +1,110 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 import HeaderHod from "../components/HeaderHod";
 import HodSidebarRepair from "../components/HodSidebarRepair";
 
 const HodViewRepair = () => {
+  const [selectedRows, setSelectedRows] = useState([]);
   const [files, setFiles] = useState([]);
   const [department, setDepartment] = useState("");
+  const [sr_no, setSr_No] = useState("");
+  const [bill_no, setBill_no] = useState("");
+  const [academic_year, setAcademicYear] = useState("");
+  const [supplier, setSupplier] = useState("");
+  const [all, setAll] = useState([]);
+  const [description, setDescription] = useState([]);
+  const [amountlesser, setAmountlesser] = useState("");
+  const [amountgreater, setAmountgreater] = useState("");
+  const [material, setMaterial] = useState("");
+  const [recyear, setRecyear] = useState("");
+  const [expenselesser, setExpenselesser] = useState("");
+  const [expensegreater, setExpensegreater] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const response = await axios.get(
+      "http://localhost:5000/pc/downloadrepairfile",
+      {
+        responseType: "blob",
+        params: {
+          department: department,
+          sr_no: sr_no,
+          academic_year: academic_year,
+          bill_no: bill_no,
+          supplier: supplier,
+          description: description,
+          material: material,
+          recyear: recyear,
+          amountgreater: amountgreater,
+          amountlesser: amountlesser,
+          expensegreater: expensegreater,
+          expenselesser: expenselesser,
+        },
+      }
+    );
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `${Date.now()}` + "test.xlsx");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
+
   useEffect(() => {
+    setLoading(true);
+
     axios
-      .get("http://localhost:5000/hod/getme", {
+      .get("http://localhost:5000/hod/getsupp", {
         withCredentials: true,
       })
       .then((response) => {
-        setDepartment(response.data.department);
-      });
-  });
-  useEffect(() => {
-    axios
-      .get("http://localhost:5000/hod/getrepair", {
-        withCredentials: true,
-        params: {
-          department: department,
-        },
+        setAll(response.data.supp);
+        return axios.get("http://localhost:5000/hod/getme", {
+          withCredentials: true,
+        });
       })
-      .then((response) => setFiles(response.data.files));
-  });
-
+      .then((response) => {
+        setDepartment(response.data.department);
+        return axios.get(`http://localhost:5000/hod/searchrepair`, {
+          withCredentials: true,
+          params: {
+            department: response.data.department,
+            sr_no: sr_no,
+            academic_year: academic_year,
+            bill_no: bill_no,
+            supplier: supplier,
+            description: description,
+            material: material,
+            recyear: recyear,
+            amountgreater: amountgreater,
+            amountlesser: amountlesser,
+            expensegreater: expensegreater,
+            expenselesser: expenselesser,
+          },
+        });
+      })
+      .then((response) => {
+        setFiles(response.data.files);
+        setLoading(false);
+      });
+  }, [
+    department,
+    sr_no,
+    academic_year,
+    bill_no,
+    supplier,
+    description,
+    material,
+    recyear,
+    amountgreater,
+    amountlesser,
+    expensegreater,
+    expenselesser,
+  ]);
   return (
     <>
       <div>
@@ -66,6 +144,142 @@ const HodViewRepair = () => {
                           <th className="py-3 px-6 text-center">Department</th>
                         </tr>
                       </thead>
+                      <thead>
+                        <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                          <th className="py-3 px-6 text-center">
+                            <input
+                              className="form-box-sm"
+                              type="text"
+                              name="sr_no"
+                              placeholder="Enter sr_no"
+                              value={sr_no}
+                              onChange={(event) => {
+                                setSr_No(event.target.value);
+                              }}
+                            ></input>
+                          </th>
+                          <th className="py-3 px-6 text-center">
+                            <input
+                              className="form-box-sm"
+                              type="text"
+                              name="description"
+                              placeholder="Enter Description"
+                              value={description}
+                              onChange={(event) => {
+                                setDescription(event.target.value);
+                              }}
+                            ></input>
+                          </th>
+                          <th className="py-3 px-6 text-center">
+                            <select
+                              className="form-dropdown-sm"
+                              value={supplier}
+                              onChange={(event) => {
+                                // console.log(event.target.value);
+                                if (event.target.value === "Select supplier") {
+                                  setSupplier("");
+                                } else {
+                                  setSupplier(event.target.value);
+                                }
+                              }}
+                            >
+                              <option>Select supplier</option>
+                              {all.map((supp) => (
+                                <option key={supp.supplier}>
+                                  {supp.supplier}
+                                </option>
+                              ))}
+                            </select>
+                          </th>
+                          <th className="py-3 px-6 text-center">
+                            <input
+                              className="form-box-sm"
+                              type="text"
+                              name="bill_no"
+                              placeholder="Enter Bill no."
+                              value={bill_no}
+                              onChange={(event) => {
+                                setBill_no(event.target.value);
+                              }}
+                            ></input>
+                          </th>
+                          <th className="py-3 px-6 text-center">Date</th>
+                          <th className="py-3 px-6 text-center">
+                            <div className="updown">
+                              <input
+                                className="form-box-sm"
+                                type="text"
+                                name="amountlesser"
+                                placeholder="Enter Min Amount"
+                                value={amountlesser}
+                                onChange={(event) => {
+                                  setAmountlesser(event.target.value);
+                                }}
+                              ></input>
+                              <input
+                                className="form-box-sm"
+                                type="text"
+                                name="amountgreater"
+                                placeholder="EnterMax Amount"
+                                value={amountgreater}
+                                onChange={(event) => {
+                                  setAmountgreater(event.target.value);
+                                }}
+                              ></input>
+                            </div>
+                          </th>
+                          <th className="py-3 px-6 text-center">
+                            <input
+                              className="form-box-sm"
+                              type="text"
+                              name="material"
+                              placeholder="Enter Material"
+                              value={material}
+                              onChange={(event) => {
+                                setMaterial(event.target.value);
+                              }}
+                            ></input>
+                          </th>
+                          <th className="py-3 px-6 text-center"></th>
+                          <th className="py-3 px-6 text-center">
+                            <input
+                              className="form-box-sm"
+                              type="text"
+                              name="academic_year"
+                              placeholder="Enter Year (yyyy-yy)"
+                              value={academic_year}
+                              onChange={(event) => {
+                                setAcademicYear(event.target.value);
+                              }}
+                            ></input>
+                          </th>
+                          <th className="py-3 px-6 text-center">
+                            <div className="updown">
+                              <input
+                                className="form-box-sm"
+                                type="text"
+                                name="expenselesser"
+                                placeholder="Enter Min Yearly Expense"
+                                value={expenselesser}
+                                onChange={(event) => {
+                                  setExpenselesser(event.target.value);
+                                }}
+                              ></input>
+                              <input
+                                className="form-box-sm"
+                                type="text"
+                                name="expensegreater"
+                                placeholder="Enter Max Yearly Expense"
+                                value={expensegreater}
+                                onChange={(event) => {
+                                  setExpensegreater(event.target.value);
+                                }}
+                              ></input>
+                            </div>
+                          </th>
+                          <th className="py-3 px-6 text-center"></th>
+                        </tr>
+                      </thead>
                       {files.map((file) => (
                         <>
                           <tbody className="text-gray-600 text-sm font-light">
@@ -73,7 +287,14 @@ const HodViewRepair = () => {
                               <td className="py-3 px-6 text-center">
                                 <div>{file.Sr_No}</div>
                               </td>
-                              <td className="py-3 px-6 text-center">
+                              <td
+                                className="py-3 px-6 text-center"
+                                style={{
+                                  wordBreak: "break-all",
+                                  overflowWrap: "break-word",
+                                  maxWidth: "300px",
+                                }}
+                              >
                                 <div>{file.Description_of_Material}</div>
                               </td>
                               <td className="py-3 px-6 text-center">
@@ -110,6 +331,23 @@ const HodViewRepair = () => {
                     </table>
                   </div>
                 </div>
+              </div>
+            </div>
+            <div className="download-flex">
+              <div>
+                <form
+                  onSubmit={(event) => {
+                    handleSubmit(event);
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="btn download-btn"
+                    role="button"
+                  >
+                    Download Recurring file
+                  </button>
+                </form>
               </div>
             </div>
           </div>

@@ -255,7 +255,7 @@ const downloadfile = async (req, res) => {
   var wb = xlsx.utils.book_new();
 
   Purchase.find(query, null, options)
-    .select("-_id -Department")
+    .select("-_id")
     .exec((err, data) => {
       if (err) {
         console.log("Error : ", err);
@@ -281,28 +281,93 @@ const downloadfile = async (req, res) => {
 };
 
 const downloadrepairfile = async (req, res) => {
+  const department = req.query.department;
+  const sr_no = req.query.sr_no;
+  const academic_year = req.query.academic_year;
+  const bill_no = req.query.bill_no;
+  const supplier = req.query.supplier;
+  const description = req.query.description;
+  const material = req.query.material;
+  const amountlesser = req.query.amountlesser;
+  const amountgreater = req.query.amountgreater;
+  const expenselesser = req.query.expenselesser;
+  const expensegreater = req.query.expensegreater;
+
+  // console.log("Amount less " + amountlesser);
+
+  const query = {};
+  if (sr_no) {
+    query.Sr_No = sr_no;
+  }
+  if (department) {
+    query.Department = department;
+  }
+  if (academic_year) {
+    query.Year = academic_year;
+  }
+
+  if (bill_no) {
+    query.Bill_No = bill_no;
+  }
+
+  if (supplier) {
+    query.Name_Of_Supplier = supplier;
+  }
+
+  if (material) {
+    query.Material = material;
+  }
+
+  if (amountlesser && amountgreater) {
+    query.Amount = { $gte: amountlesser, $lte: amountgreater };
+  } else if (amountgreater) {
+    query.Amount = { $lte: amountgreater };
+  } else if (amountlesser) {
+    query.Amount = { $gte: amountlesser };
+  }
+
+  var searchKey;
+  if (description) {
+    searchKey = new RegExp(description, "i");
+    query.Description_of_Material = searchKey;
+  }
+
+  if (expenselesser && expensegreater) {
+    query.Yearly_expense = { $gte: expenselesser, $lte: expensegreater };
+  } else if (expensegreater) {
+    query.Yearly_expense = { $lte: expensegreater };
+  } else if (expenselesser) {
+    query.Yearly_expense = { $gte: expenselesser };
+  }
+
+  const options = {
+    collation: { locale: "en", strength: 2 },
+  };
+
   var wb = xlsx.utils.book_new();
-  Recurring.find({}, { _id: 0 }, (err, data) => {
-    if (err) {
-      console.log("Error : ", err);
-    } else {
-      var temp = JSON.stringify(data); // Convert JSON to Json string
-      temp = JSON.parse(temp); // Convert to object
-      var ws = xlsx.utils.json_to_sheet(temp); // Convert Json Object into sheet of EXCEL
-      xlsx.utils.book_append_sheet(wb, ws, "sheet1"); //Append sheets into wb
-      xlsx.writeFile(
-        //Now creating new file with unique name and writing EXCEL data to it
-        wb,
-        (path1 = path.join(
-          __dirname,
-          "../../",
-          "/datafetcher/",
-          `${Date.now()}` + "test.xlsx"
-        ))
-      );
-      res.download(path1);
-    }
-  });
+  Recurring.find(query, null, options)
+    .select("-_id")
+    .exec((err, data) => {
+      if (err) {
+        console.log("Error : ", err);
+      } else {
+        var temp = JSON.stringify(data); // Convert JSON to Json string
+        temp = JSON.parse(temp); // Convert to object
+        var ws = xlsx.utils.json_to_sheet(temp); // Convert Json Object into sheet of EXCEL
+        xlsx.utils.book_append_sheet(wb, ws, "sheet1"); //Append sheets into wb
+        xlsx.writeFile(
+          //Now creating new file with unique name and writing EXCEL data to it
+          wb,
+          (path1 = path.join(
+            __dirname,
+            "../../",
+            "/datafetcher/",
+            `${Date.now()}` + "test.xlsx"
+          ))
+        );
+        res.download(path1);
+      }
+    });
 };
 
 const getpurchase = async (req, res) => {
@@ -413,6 +478,80 @@ const searchPurchase = async (req, res) => {
   }
 };
 
+const searchRepair = async (req, res) => {
+  const department = req.query.department;
+  const sr_no = req.query.sr_no;
+  const academic_year = req.query.academic_year;
+  const bill_no = req.query.bill_no;
+  const supplier = req.query.supplier;
+  const description = req.query.description;
+  const material = req.query.material;
+  const amountlesser = req.query.amountlesser;
+  const amountgreater = req.query.amountgreater;
+  const expenselesser = req.query.expenselesser;
+  const expensegreater = req.query.expensegreater;
+
+  // console.log("Amount less " + amountlesser);
+
+  const query = {};
+  if (sr_no) {
+    query.Sr_No = sr_no;
+  }
+  if (department) {
+    query.Department = department;
+  }
+  if (academic_year) {
+    query.Year = academic_year;
+  }
+
+  if (bill_no) {
+    query.Bill_No = bill_no;
+  }
+
+  if (supplier) {
+    query.Name_Of_Supplier = supplier;
+  }
+
+  if (material) {
+    query.Material = material;
+  }
+
+  if (amountlesser && amountgreater) {
+    query.Amount = { $gte: amountlesser, $lte: amountgreater };
+  } else if (amountgreater) {
+    query.Amount = { $lte: amountgreater };
+  } else if (amountlesser) {
+    query.Amount = { $gte: amountlesser };
+  }
+
+  var searchKey;
+  if (description) {
+    searchKey = new RegExp(description, "i");
+    query.Description_of_Material = searchKey;
+  }
+
+  if (expenselesser && expensegreater) {
+    query.Yearly_expense = { $gte: expenselesser, $lte: expensegreater };
+  } else if (expensegreater) {
+    query.Yearly_expense = { $lte: expensegreater };
+  } else if (expenselesser) {
+    query.Yearly_expense = { $gte: expenselesser };
+  }
+
+  const options = {
+    collation: { locale: "en", strength: 2 },
+  };
+
+  try {
+    const files = await Recurring.find(query, null, options);
+    res.json({
+      files: files,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const deleteRow = async (req, res) => {
   try {
     const { id } = req.body;
@@ -441,6 +580,26 @@ const getSupplier = async (req, res) => {
   }
 };
 
+const deleteRowMany = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const rows = await Purchase.find({ _id: { $in: ids } });
+
+    if (!rows) {
+      return res.status(400).json({ message: "Data not found" });
+    }
+
+    // loop through the rows and delete each document
+    for (let i = 0; i < rows.length; i++) {
+      await rows[i].remove();
+    }
+
+    return res.status(404).json({ message: "Data deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   loginDean,
   registerDean,
@@ -454,6 +613,8 @@ module.exports = {
   getpurchase,
   getrepair,
   searchPurchase,
-  deleteRow,
   getSupplier,
+  deleteRow,
+  deleteRowMany,
+  searchRepair,
 };

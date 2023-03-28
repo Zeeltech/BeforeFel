@@ -8,6 +8,7 @@ const Recurring = require("../models/recurringModel");
 const fs = require("fs");
 const path = require("path");
 const xlsx = require("xlsx");
+const Supplier = require("../models/supplierModel");
 
 const loginHod = async (req, res) => {
   try {
@@ -197,56 +198,193 @@ const getdept = async (req, res) => {
 };
 
 const downloadfile = async (req, res) => {
-  const department = req.query.department;
-  console.log("From download" + department);
+  const sr_no = req.query.sr_no;
+  const price = req.query.price;
+  const academic_year = req.query.academic_year;
+  const description = req.query.description;
+  const bill_no = req.query.bill_no;
+  const po_no = req.query.po_no;
+  const supplier = req.query.supplier;
+  const item = req.query.item;
+  const pricegreater = req.query.pricegreater;
+  const pricelesser = req.query.pricelesser;
+  const quantity = req.query.quantity;
+  const totalquantity = req.query.totalquantity;
+  const total = req.query.total;
+
+  const query = {};
+  if (sr_no) {
+    query.Sr_No = sr_no;
+  }
+  if (price) {
+    query.Price = price;
+  }
+  if (academic_year) {
+    query.Academic_Year = academic_year;
+  }
+
+  if (description) {
+    query.Description = description;
+  }
+
+  if (bill_no) {
+    query.Bill_No = bill_no;
+  }
+
+  if (po_no) {
+    query.PO_No = po_no;
+  }
+
+  if (supplier) {
+    query.Supplier_Name = supplier;
+  }
+
+  if (quantity) {
+    query.Quantity = quantity;
+  }
+
+  if (totalquantity) {
+    query.Total_Quantity = totalquantity;
+  }
+
+  if (total) {
+    query.Total = total;
+  }
+  console.log("Price is" + pricelesser);
+  if (pricegreater && pricelesser) {
+    query.Price = { $gte: pricelesser, $lte: pricegreater };
+  } else if (pricegreater) {
+    query.Price = { $lte: pricegreater };
+  } else if (pricelesser) {
+    query.Price = { $gte: pricelesser };
+  }
+
+  var searchKey;
+  if (item) {
+    searchKey = new RegExp(item, "i");
+    query.Item = searchKey;
+  }
+
+  const options = {
+    collation: { locale: "en", strength: 2 },
+  };
+
   var wb = xlsx.utils.book_new();
-  Purchase.find({ Department: department }, { _id: 0 }, (err, data) => {
-    if (err) {
-      console.log("Error : ", err);
-    } else {
-      var temp = JSON.stringify(data); // Convert JSON to Json string
-      temp = JSON.parse(temp); // Convert to object
-      var ws = xlsx.utils.json_to_sheet(temp); // Convert Json Object into sheet of EXCEL
-      xlsx.utils.book_append_sheet(wb, ws, "sheet1"); //Append sheets into wb
-      xlsx.writeFile(
-        //Now creating new file with unique name and writing EXCEL data to it
-        wb,
-        (path1 = path.join(
-          __dirname,
-          "../../",
-          "/datafetcher/",
-          `${Date.now()}` + "test.xlsx"
-        ))
-      );
-      res.download(path1);
-    }
-  });
+
+  Purchase.find(query, null, options)
+    .select("-_id -Department")
+    .exec((err, data) => {
+      if (err) {
+        console.log("Error : ", err);
+      } else {
+        // delete data["Department"];
+        var temp = JSON.stringify(data); // Convert JSON to Json string
+        temp = JSON.parse(temp); // Convert to object
+        var ws = xlsx.utils.json_to_sheet(temp); // Convert Json Object into sheet of EXCEL
+        xlsx.utils.book_append_sheet(wb, ws, "sheet1"); //Append sheets into wb
+        xlsx.writeFile(
+          //Now creating new file with unique name and writing EXCEL data to it
+          wb,
+          (path1 = path.join(
+            __dirname,
+            "../../",
+            "/datafetcher/",
+            `${Date.now()}` + "test.xlsx"
+          ))
+        );
+        res.download(path1);
+      }
+    });
 };
 
 const downloadrepairfile = async (req, res) => {
   const department = req.query.department;
+  const sr_no = req.query.sr_no;
+  const academic_year = req.query.academic_year;
+  const bill_no = req.query.bill_no;
+  const supplier = req.query.supplier;
+  const description = req.query.description;
+  const material = req.query.material;
+  const amountlesser = req.query.amountlesser;
+  const amountgreater = req.query.amountgreater;
+  const expenselesser = req.query.expenselesser;
+  const expensegreater = req.query.expensegreater;
+
+  // console.log("Amount less " + amountlesser);
+
+  const query = {};
+  if (sr_no) {
+    query.Sr_No = sr_no;
+  }
+  if (department) {
+    query.Department = department;
+  }
+  if (academic_year) {
+    query.Year = academic_year;
+  }
+
+  if (bill_no) {
+    query.Bill_No = bill_no;
+  }
+
+  if (supplier) {
+    query.Name_Of_Supplier = supplier;
+  }
+
+  if (material) {
+    query.Material = material;
+  }
+
+  if (amountlesser && amountgreater) {
+    query.Amount = { $gte: amountlesser, $lte: amountgreater };
+  } else if (amountgreater) {
+    query.Amount = { $lte: amountgreater };
+  } else if (amountlesser) {
+    query.Amount = { $gte: amountlesser };
+  }
+
+  var searchKey;
+  if (description) {
+    searchKey = new RegExp(description, "i");
+    query.Description_of_Material = searchKey;
+  }
+
+  if (expenselesser && expensegreater) {
+    query.Yearly_expense = { $gte: expenselesser, $lte: expensegreater };
+  } else if (expensegreater) {
+    query.Yearly_expense = { $lte: expensegreater };
+  } else if (expenselesser) {
+    query.Yearly_expense = { $gte: expenselesser };
+  }
+
+  const options = {
+    collation: { locale: "en", strength: 2 },
+  };
+
   var wb = xlsx.utils.book_new();
-  Recurring.find({ Department: department }, { _id: 0 }, (err, data) => {
-    if (err) {
-      console.log("Error : ", err);
-    } else {
-      var temp = JSON.stringify(data); // Convert JSON to Json string
-      temp = JSON.parse(temp); // Convert to object
-      var ws = xlsx.utils.json_to_sheet(temp); // Convert Json Object into sheet of EXCEL
-      xlsx.utils.book_append_sheet(wb, ws, "sheet1"); //Append sheets into wb
-      xlsx.writeFile(
-        //Now creating new file with unique name and writing EXCEL data to it
-        wb,
-        (path1 = path.join(
-          __dirname,
-          "../../",
-          "/datafetcher/",
-          `${Date.now()}` + "test.xlsx"
-        ))
-      );
-      res.download(path1);
-    }
-  });
+  Recurring.find(query, null, options)
+    .select("-_id -Department")
+    .exec((err, data) => {
+      if (err) {
+        console.log("Error : ", err);
+      } else {
+        var temp = JSON.stringify(data); // Convert JSON to Json string
+        temp = JSON.parse(temp); // Convert to object
+        var ws = xlsx.utils.json_to_sheet(temp); // Convert Json Object into sheet of EXCEL
+        xlsx.utils.book_append_sheet(wb, ws, "sheet1"); //Append sheets into wb
+        xlsx.writeFile(
+          //Now creating new file with unique name and writing EXCEL data to it
+          wb,
+          (path1 = path.join(
+            __dirname,
+            "../../",
+            "/datafetcher/",
+            `${Date.now()}` + "test.xlsx"
+          ))
+        );
+        res.download(path1);
+      }
+    });
 };
 
 const getpurchase = async (req, res) => {
@@ -272,6 +410,178 @@ const getrepair = async (req, res) => {
     console.log(error);
   }
 };
+
+const searchPurchase = async (req, res) => {
+  const department = req.query.department;
+  const sr_no = req.query.sr_no;
+  const price = req.query.price;
+  const academic_year = req.query.academic_year;
+  const description = req.query.description;
+  const bill_no = req.query.bill_no;
+  const po_no = req.query.po_no;
+  const supplier = req.query.supplier;
+  const item = req.query.item;
+  const pricegreater = req.query.pricegreater;
+  const pricelesser = req.query.pricelesser;
+  const quantity = req.query.quantity;
+  const totalquantity = req.query.totalquantity;
+  const total = req.query.total;
+
+  const query = {};
+  if (sr_no) {
+    query.Sr_No = sr_no;
+  }
+  if (department) {
+    query.Department = department;
+  }
+  if (price) {
+    query.Price = price;
+  }
+  if (academic_year) {
+    query.Academic_Year = academic_year;
+  }
+
+  if (description) {
+    query.Description = description;
+  }
+
+  if (bill_no) {
+    query.Bill_No = bill_no;
+  }
+
+  if (po_no) {
+    query.PO_No = po_no;
+  }
+
+  if (supplier) {
+    query.Supplier_Name = supplier;
+  }
+
+  if (quantity) {
+    query.Quantity = quantity;
+  }
+
+  if (totalquantity) {
+    query.Total_Quantity = totalquantity;
+  }
+
+  if (total) {
+    query.Total = total;
+  }
+  console.log("Price is" + pricelesser);
+  if (pricegreater && pricelesser) {
+    query.Price = { $gte: pricelesser, $lte: pricegreater };
+  } else if (pricegreater) {
+    query.Price = { $lte: pricegreater };
+  } else if (pricelesser) {
+    query.Price = { $gte: pricelesser };
+  }
+
+  var searchKey;
+  if (item) {
+    searchKey = new RegExp(item, "i");
+    query.Item = searchKey;
+  }
+
+  const options = {
+    collation: { locale: "en", strength: 2 },
+  };
+
+  try {
+    const files = await Purchase.find(query, null, options);
+    res.json({
+      files: files,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const searchRepair = async (req, res) => {
+  const department = req.query.department;
+  const sr_no = req.query.sr_no;
+  const academic_year = req.query.academic_year;
+  const bill_no = req.query.bill_no;
+  const supplier = req.query.supplier;
+  const description = req.query.description;
+  const material = req.query.material;
+  const amountlesser = req.query.amountlesser;
+  const amountgreater = req.query.amountgreater;
+  const expenselesser = req.query.expenselesser;
+  const expensegreater = req.query.expensegreater;
+
+  // console.log("Amount less " + amountlesser);
+
+  const query = {};
+  if (sr_no) {
+    query.Sr_No = sr_no;
+  }
+  if (department) {
+    query.Department = department;
+  }
+  if (academic_year) {
+    query.Year = academic_year;
+  }
+
+  if (bill_no) {
+    query.Bill_No = bill_no;
+  }
+
+  if (supplier) {
+    query.Name_Of_Supplier = supplier;
+  }
+
+  if (material) {
+    query.Material = material;
+  }
+
+  if (amountlesser && amountgreater) {
+    query.Amount = { $gte: amountlesser, $lte: amountgreater };
+  } else if (amountgreater) {
+    query.Amount = { $lte: amountgreater };
+  } else if (amountlesser) {
+    query.Amount = { $gte: amountlesser };
+  }
+
+  var searchKey;
+  if (description) {
+    searchKey = new RegExp(description, "i");
+    query.Description_of_Material = searchKey;
+  }
+
+  if (expenselesser && expensegreater) {
+    query.Yearly_expense = { $gte: expenselesser, $lte: expensegreater };
+  } else if (expensegreater) {
+    query.Yearly_expense = { $lte: expensegreater };
+  } else if (expenselesser) {
+    query.Yearly_expense = { $gte: expenselesser };
+  }
+
+  const options = {
+    collation: { locale: "en", strength: 2 },
+  };
+
+  try {
+    const files = await Recurring.find(query, null, options);
+    res.json({
+      files: files,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getSupplier = async (req, res) => {
+  try {
+    const supp = await Supplier.find();
+    res.json({
+      supp: supp,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   loginHod,
   registerHod,
@@ -285,4 +595,7 @@ module.exports = {
   getrepair,
   downloadfile,
   downloadrepairfile,
+  searchRepair,
+  searchPurchase,
+  getSupplier,
 };
