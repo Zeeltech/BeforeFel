@@ -31,6 +31,8 @@ const {
   searchPurchase,
   searchRepair,
   deleteRow,
+  deleteRowMany,
+  updatepurchase,
   deleteRowRepair,
   deleteRowRepairMany,
 } = require("../controller/pcController");
@@ -57,6 +59,7 @@ router.post("/formpurchase", formpurchase);
 router.post("/formrepair", formrepair);
 
 router.post("/updaterepair", updaterepair);
+router.post("/updatepurchase", updatepurchase);
 
 router.get("/searchpurchase", searchPurchase);
 router.get("/searchrepair", searchRepair);
@@ -64,6 +67,7 @@ router.get("/searchrepair", searchRepair);
 router.post("/deleterow", deleteRow);
 router.post("/deleterowrepair", deleteRowRepair);
 router.post("/deleterowrepairmany", deleteRowRepairMany);
+router.post("/deleterowmany", deleteRowMany);
 
 // ===============================================================================
 // upload purchase file

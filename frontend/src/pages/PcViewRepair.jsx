@@ -29,8 +29,8 @@ const PcViewRepair = () => {
   const [popup, setPop] = useState(false);
 
   const [supplierName, setSupplierName] = useState("");
-  // const [supplierAddress, setSupplierAddress] = useState("");
-  // const [supplierContact, setSupplierContact] = useState("");
+  const [supplierAddress, setSupplierAddress] = useState("");
+  const [supplierContact, setSupplierContact] = useState("");
   const [confirmDelete, setConfirmDelete] = useState(false); //Used in handleDeleteClick
   const [confirmDeleteId, setConfirmDeleteId] = useState(null); //Used in handleDeleteClick
 
@@ -42,12 +42,12 @@ const PcViewRepair = () => {
     formData._id = file._id;
     formData.Sr_No = file.Sr_No;
     formData.Description_of_Material = file.Description_of_Material;
-    formData.Name_Of_Supplier = supplierName;
+    formData.Supplier_Name = supplierName;
     formData.Bill_No = file.Bill_No;
     formData.Date = file.Date;
     formData.Amount = file.Amount;
     formData.Material = file.Material;
-    formData.Receiving_Year = file.Receiving_Year;
+    formData.Receiving_date = file.Receiving_date;
     formData.Year = file.Year;
     formData.Yearly_expense = file.Yearly_expense;
     formData.Department = file.Department;
@@ -65,7 +65,7 @@ const PcViewRepair = () => {
     Date: "",
     Amount: "",
     Material: "",
-    Receiving_Year: "",
+    Receiving_date: "",
     Year: "",
     Yearly_expense: "",
     Department: "",
@@ -90,7 +90,7 @@ const PcViewRepair = () => {
           Date: formData.Date,
           Amount: formData.Amount,
           Material: formData.Material,
-          Receiving_Year: formData.Receiving_Year,
+          Receiving_date: formData.Receiving_date,
           Year: formData.Year,
           Yearly_expense: formData.Yearly_expense,
           // Address: supplierAddress,
@@ -280,7 +280,7 @@ const PcViewRepair = () => {
                         </div>
 
                         <div className="flex-form">
-                          <p className="form-text2">Description of Material</p>
+                          <p className="form-text2">Description</p>
                           <input
                             className="pc-form-box"
                             type="text"
@@ -379,14 +379,14 @@ const PcViewRepair = () => {
                             className="pc-form-box"
                             type="text"
                             placeholder="Enter Receiving Date in dd/mm/yyyy format"
-                            name="Receiving_Year"
-                            value={formData.Receiving_Year}
+                            name="Receiving_date"
+                            value={formData.Receiving_date}
                             onChange={handleInputChange}
                           ></input>
                         </div>
 
                         <div className="flex-form">
-                          <p className="form-text2">Receiving Date</p>
+                          <p className="form-text2">Year</p>
                           <input
                             className="pc-form-box"
                             type="text"
@@ -398,7 +398,7 @@ const PcViewRepair = () => {
                         </div>
 
                         <div className="flex-form">
-                          <p className="form-text2">Receiving Date</p>
+                          <p className="form-text2">Expense</p>
                           <input
                             className="pc-form-box"
                             type="text"
@@ -456,7 +456,7 @@ const PcViewRepair = () => {
                           <th className="py-3 px-6 text-center">Amount</th>
                           <th className="py-3 px-6 text-center">Material</th>
                           <th className="py-3 px-6 text-center">
-                            Receiving_Year
+                            Receiving_date
                           </th>
                           <th className="py-3 px-6 text-center">Year</th>
                           <th className="py-3 px-6 text-center">
@@ -634,6 +634,8 @@ const PcViewRepair = () => {
                               <td></td>
                               <td></td>
                               <td></td>
+                              <td></td>
+
                               <td
                                 className="py-3 px-6 text-center"
                                 style={{ cursor: "pointer" }}
@@ -776,7 +778,7 @@ const PcViewRepair = () => {
                                     <div>{file.Material}</div>
                                   </td>
                                   <td className="py-3 px-6 text-center">
-                                    <div>{file.Receiving_Year}</div>
+                                    <div>{file.Receiving_date}</div>
                                   </td>
                                   <td className="py-3 px-6 text-center">
                                     <div>{file.Year}</div>

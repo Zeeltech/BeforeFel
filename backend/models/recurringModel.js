@@ -9,7 +9,7 @@ const recurring = mongoose.Schema(
     Date: { type: String, default: "" },
     Amount: { type: Number, default: "" },
     Material: { type: String, default: "" },
-    Receivng_date: { type: String, default: "" },
+    Receiving_date: { type: String, default: "" },
     Year: { type: String, default: "" },
     Yearly_expense: { type: Number, default: "" },
     Department: { type: String, default: "" },

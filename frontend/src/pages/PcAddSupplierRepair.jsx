@@ -105,24 +105,46 @@ function PcAddSupplierRepair() {
             </form>
           </div>
         </div>
-        <div className="main-right text-color">
-          <div className="box">
-            <div className="box-title">All Suppliers</div>
-            <div className="box-inner">
-              {all.map((supp) => (
-                <>
-                  <div className="flex-row">
-                    <div>{supp.supplier}</div>
-                    <span>
-                      <TiDelete
-                        className="icon"
-                        size={20}
-                        onClick={(event) => suppDelete(event, supp.supplier)}
-                      />
-                    </span>
+        <div className="main-right">
+          <div className="container table">
+            <div className="overflow-x-auto">
+              <div>
+                <div className="w-full">
+                  <div className="shadow-md rounded my-5">
+                    <table className="min-w-max bg-white w-full table-auto">
+                      <thead>
+                        <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                          <th className="py-3 px-6 text-center">
+                            Supplier Name
+                          </th>
+                          <th className="py-3 px-6 text-center">Address</th>
+                          <th className="py-3 px-6 text-center">Contact</th>
+                          <th className="py-3 px-6 text-center"></th>
+                        </tr>
+                      </thead>
+                      {all.map((supp) => (
+                        <>
+                          {/* <div className="flex-row"> */}
+                          <tr>
+                            <td className="tdss">{supp.supplier}</td>
+                            <td className="tdss">{supp.address}</td>
+                            <td className="tdss">{supp.contact}</td>
+                            <td>
+                              <TiDelete
+                                className="icon"
+                                size={20}
+                                onClick={(event) =>
+                                  suppDelete(event, supp.supplier)
+                                }
+                              />
+                            </td>
+                          </tr>
+                        </>
+                      ))}
+                    </table>
                   </div>
-                </>
-              ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

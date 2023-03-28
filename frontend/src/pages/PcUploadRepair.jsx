@@ -41,13 +41,28 @@ const PcUploadRepair = () => {
         },
         params: { department: department },
       })
-      .then(() => {
-        toast.success("Successfully uploaded");
-        console.log("REPAIR " + department);
+      .then((response ) => {
+        console.log(response);
+        if (response.data.message === "Duplicate key found") {
+          toast.error(response.data.pe);
+        }
+        if (response.data.message === "Please reload the page") {
+          toast.error("Please reload the page");
+        } else {
+          var print = "";
+          console.log(response.data.ps.length);
+          for (var i = 0; i < response.data.ps.length; i++) {
+            print = print + response.data.ps[i];
+            if (i !== response.data.ps.length - 1) {
+              print = print + " , ";
+            }
+          }
+          if (response.data.ps.length !== 0) {
+            toast.success("Successfully uploaded data with Sr no. " + print);
+          }
+        }
       })
-      .catch(() => {
-        toast.error("Failure");
-      });
+      .catch(() => {});
   };
 
   return (

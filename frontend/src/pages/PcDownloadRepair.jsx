@@ -42,7 +42,7 @@ const PcDownloadRepair = () => {
       <PcSidebarRepair />
       <div className="download-flex">
         <div>
-          <p className="text-color text-size">Download purchase file</p>
+          <p className="text-color text-size">Download recurring file</p>
         </div>
         <div>
           <form

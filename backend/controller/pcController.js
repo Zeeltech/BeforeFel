@@ -554,19 +554,56 @@ const uploadRepairFile = async (req, res) => {
               });
             }
           } catch (error) {
-            console.log(error);
+            /* console.log(error); */
           }
         }
         P_JSON[p].Department = department;
         console.log(P_JSON[p].Department);
       }
+
+      var allrecord = [];
+      for (var i = 0; i < P_JSON.length; i++) {
+        allrecord[i] = P_JSON[i].Sr_No;
+      }
+      var pp = "";
+
       try {
-        await Recurring.insertMany(P_JSON, { ordered: false });
+        const pp = await Recurring.insertMany(P_JSON, { ordered: false });
+        var printline = [];
+        for (var i = 0; i < pp.length; i++) {
+          printline[i] = pp[i].Sr_No;
+        }
+        console.log(pp);
         res
           .status(200)
-          .json({ message: "Data entered successfully for recurring file" });
+          .json({ message: "Data entered successfully", ps: printline });
       } catch (error) {
-        res.send({ message: "Duplicate key found" });
+        if (error.writeErrors) {
+          const duplicateErrors = error.writeErrors;
+
+          const pr = [];
+          var print = "Sr_no ";
+          for (var i = 0; i < duplicateErrors.length; i++) {
+            print = print + duplicateErrors[i].err.op.Sr_No;
+            pr[i] = duplicateErrors[i].err.op.Sr_No;
+            if (i !== duplicateErrors.length - 1) {
+              print = print + " , ";
+            }
+          }
+          const allrec = Array.from(allrecord, (x) => `${x}`);
+
+          console.log(pr);
+          console.log(allrec);
+          pp = allrec.filter((x) => !pr.includes(x));
+          console.log("pppp" + pp);
+          print =
+            print + " has been failed to entered as duplicate records found";
+          res.send({
+            message: "Duplicate key found",
+            pe: print,
+            ps: pp,
+          });
+        }
       }
 
       chmodr("./", 0o777, (err) => {
@@ -797,6 +834,62 @@ const formrepair = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.json({ message: `Duplicate data` });
+  }
+};
+
+const updatepurchase = async (req, res) => {
+  try {
+    const {
+      _id,
+      Sr_No,
+      Academic_Year,
+      Item,
+      Description,
+      Quantity,
+      Total_Quantity,
+      Price,
+      Total,
+      Bill_No,
+      Invoice_Date,
+      PO_No,
+      PO_Date,
+      Supplier_Name,
+      Address,
+      Contact,
+      Department,
+    } = req.body;
+
+    const updatedDocument = await Purchase.findByIdAndUpdate(
+      _id,
+      {
+        Sr_No,
+        Academic_Year,
+        Item,
+        Description,
+        Quantity,
+        Total_Quantity,
+        Price,
+        Total,
+        Bill_No,
+        Invoice_Date,
+        PO_No,
+        PO_Date,
+        Supplier_Name,
+        Address,
+        Contact,
+        Department,
+      },
+      { new: true }
+    );
+
+    if (!updatedDocument) {
+      return res.status(404).json({ message: "Document not found" });
+    }
+
+    res.json({ message: `Data inserted in recurring database` });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 
@@ -1060,6 +1153,25 @@ const deleteRowRepairMany = async (req, res) => {
     console.log(error);
   }
 };
+const deleteRowMany = async (req, res) => {
+  try {
+    const { ids } = req.body;
+    const rows = await Purchase.find({ _id: { $in: ids } });
+
+    if (!rows) {
+      return res.status(400).json({ message: "Data not found" });
+    }
+
+    // loop through the rows and delete each document
+    for (let i = 0; i < rows.length; i++) {
+      await rows[i].remove();
+    }
+
+    return res.status(404).json({ message: "Data deleted" });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 module.exports = {
   loginPc,
@@ -1084,7 +1196,9 @@ module.exports = {
   searchPurchase,
   searchRepair,
   deleteRow,
+  deleteRowMany,
   deleteRowRepair,
   deleteRowRepairMany,
   updaterepair,
+  updatepurchase,
 };
