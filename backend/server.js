@@ -16,7 +16,7 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: "https://purchase-and-repair.onrender.com/",
+  origin: "https://master--poetic-licorice-52cef4.netlify.app/",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
