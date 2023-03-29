@@ -3,7 +3,10 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     //Done connection using .env
-    const conn = await mongoose.connect(process.env.MONGO_URL);
+    const conn = await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     //just for cyan highlighted text
     console.log(`MongoDB connected: ${conn.connection.host}`.cyan.underline);
   } catch (error) {
