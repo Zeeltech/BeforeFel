@@ -26,7 +26,7 @@ const HodViewPurchase = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.get("http://localhost:5000/hod/downloadfile", {
+    const response = await axios.get("https://purchase-and-repair.onrender.com/hod/downloadfile", {
       withCredentials: true,  
       responseType: "blob",
       params: {
@@ -57,18 +57,18 @@ const HodViewPurchase = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5000/hod/getsupp", {
+      .get("https://purchase-and-repair.onrender.com/hod/getsupp", {
         withCredentials: true,
       })
       .then((response) => {
         setAll(response.data.supp);
-        return axios.get("http://localhost:5000/hod/getme", {
+        return axios.get("https://purchase-and-repair.onrender.com/hod/getme", {
           withCredentials: true,
         });
       })
       .then((response) => {
         setDepartment(response.data.department);
-        return axios.get(`http://localhost:5000/hod/searchpurchase`, {
+        return axios.get(`https://purchase-and-repair.onrender.com/hod/searchpurchase`, {
           withCredentials: true,
           params: {
             sr_no: sr_no,

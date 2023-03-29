@@ -14,7 +14,7 @@ function PcAddSupplierRepair() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getsupp", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/pc/getsupp", { withCredentials: true })
       .then((response) => setAll(response.data.supp));
   });
 
@@ -22,7 +22,7 @@ function PcAddSupplierRepair() {
     event.preventDefault();
     await axios
       .post(
-        "http://localhost:5000/pc/addsupp",
+        "https://purchase-and-repair.onrender.com/pc/addsupp",
         {
           supplier: value,
           address: suppAdd,
@@ -44,7 +44,7 @@ function PcAddSupplierRepair() {
     event.preventDefault();
     await axios
       .post(
-        "http://localhost:5000/pc/deletesupp",
+        "https://purchase-and-repair.onrender.com/pc/deletesupp",
         {
           supplier: supplier,
         },

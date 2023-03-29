@@ -9,7 +9,7 @@ function PcFormRepair() {
   const [department, setDepartment] = useState("");
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getme", {
+      .get("https://purchase-and-repair.onrender.com/pc/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -18,7 +18,7 @@ function PcFormRepair() {
   });
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getsupp", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/pc/getsupp", { withCredentials: true })
       .then((response) => setAll(response.data.supp));
   });
   const [supplierName, setSupplierName] = useState("");
@@ -48,7 +48,7 @@ function PcFormRepair() {
     event.preventDefault();
     await axios
       .post(
-        "http://localhost:5000/pc/formrepair",
+        "https://purchase-and-repair.onrender.com/pc/formrepair",
         {
           Sr_No: formData.Sr_No,
           Description_of_Material: formData.Description_of_Material,

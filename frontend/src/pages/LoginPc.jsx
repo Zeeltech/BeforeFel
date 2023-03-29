@@ -15,7 +15,7 @@ function LoginPc() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/pc/dashboard", { withCredentials: true })
       .then((response) => navigate("/pc/dashboard"));
   });
 
@@ -28,7 +28,7 @@ function LoginPc() {
 
       await axios
         .post(
-          "http://localhost:5000/pc/login",
+          "https://purchase-and-repair.onrender.com/pc/login",
           {
             email: email,
             password: password,

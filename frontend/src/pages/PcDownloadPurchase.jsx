@@ -9,7 +9,7 @@ const PcDownloadPurchase = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getme", {
+      .get("https://purchase-and-repair.onrender.com/pc/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -19,7 +19,7 @@ const PcDownloadPurchase = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.get("http://localhost:5000/pc/downloadfile", {
+    const response = await axios.get("https://purchase-and-repair.onrender.com/pc/downloadfile", {
       responseType: "blob",
       withCredentials: true,
       params: {

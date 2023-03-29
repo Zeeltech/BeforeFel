@@ -15,12 +15,12 @@ function AllUser() {
   useEffect(() => {
     axios
       .all([
-        axios.get("http://localhost:5000/admin/dashboard", {
+        axios.get("https://purchase-and-repair.onrender.com/admin/dashboard", {
           withCredentials: true,
         }),
-        axios.post("http://localhost:5000/pc/req", { status: "Active" }),
-        axios.post("http://localhost:5000/dean/req", { status: "Active" }),
-        axios.post("http://localhost:5000/hod/req", { status: "Active" }),
+        axios.post("https://purchase-and-repair.onrender.com/pc/req", { status: "Active" }),
+        axios.post("https://purchase-and-repair.onrender.com/dean/req", { status: "Active" }),
+        axios.post("https://purchase-and-repair.onrender.com/hod/req", { status: "Active" }),
       ])
       .then(
         axios.spread((res1, res2, res3, res4) => {

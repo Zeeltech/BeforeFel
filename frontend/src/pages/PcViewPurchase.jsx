@@ -97,7 +97,7 @@ const PcViewPurchase = () => {
 
     await axios
       .post(
-        "http://localhost:5000/pc/updatepurchase",
+        "https://purchase-and-repair.onrender.com/pc/updatepurchase",
         {
           _id: formData._id,
           Sr_No: formData.Sr_No,
@@ -140,7 +140,7 @@ const PcViewPurchase = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.get("http://localhost:5000/pc/downloadfile", {
+    const response = await axios.get("https://purchase-and-repair.onrender.com/pc/downloadfile", {
       responseType: "blob",
       withCredentials: true,
       params: {
@@ -171,7 +171,7 @@ const PcViewPurchase = () => {
   const handleDelete = async (id) => {
     try {
       await axios
-        .post("http://localhost:5000/pc/deleterow", {
+        .post("https://purchase-and-repair.onrender.com/pc/deleterow", {
           withCredentials: true,
           id: id,
         })
@@ -189,7 +189,7 @@ const PcViewPurchase = () => {
   const handleDeleteMany = async () => {
     try {
       await axios
-        .post("http://localhost:5000/pc/deleterowmany", {
+        .post("https://purchase-and-repair.onrender.com/pc/deleterowmany", {
           withCredentials: true,
           ids: selectedRows,
         })
@@ -207,18 +207,18 @@ const PcViewPurchase = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5000/pc/getsupp", {
+      .get("https://purchase-and-repair.onrender.com/pc/getsupp", {
         withCredentials: true,
       })
       .then((response) => {
         setAll(response.data.supp);
-        return axios.get("http://localhost:5000/pc/getme", {
+        return axios.get("https://purchase-and-repair.onrender.com/pc/getme", {
           withCredentials: true,
         });
       })
       .then((response) => {
         setDepartment(response.data.department);
-        return axios.get(`http://localhost:5000/pc/searchpurchase`, {
+        return axios.get(`https://purchase-and-repair.onrender.com/pc/searchpurchase`, {
           withCredentials: true,
           params: {
             department: response.data.department,

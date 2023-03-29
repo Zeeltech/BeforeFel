@@ -11,7 +11,7 @@ function PcDashboard() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/dean/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/dean/dashboard", { withCredentials: true })
       .then((response) => {})
       .catch((err) => navigate("/login/dean"));
   });

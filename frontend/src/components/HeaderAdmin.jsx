@@ -14,7 +14,7 @@ function HeaderAdmin() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/admin/getme", {
+      .get("https://purchase-and-repair.onrender.com/admin/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -25,7 +25,7 @@ function HeaderAdmin() {
   const handleLogout = async (event) => {
     event.preventDefault();
     await axios
-      .get("http://localhost:5000/admin/logout", {
+      .get("https://purchase-and-repair.onrender.com/admin/logout", {
         withCredentials: true,
       })
       .then((response) => navigate("/login/admin"));

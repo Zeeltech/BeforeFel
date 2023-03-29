@@ -15,7 +15,7 @@ function HeaderHod() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/hod/getme", {
+      .get("https://purchase-and-repair.onrender.com/hod/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -27,7 +27,7 @@ function HeaderHod() {
   const handleLogout = async (event) => {
     event.preventDefault();
     await axios
-      .get("http://localhost:5000/hod/logout", {
+      .get("https://purchase-and-repair.onrender.com/hod/logout", {
         withCredentials: true,
       })
       .then((response) => navigate("/login/hod"));

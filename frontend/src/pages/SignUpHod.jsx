@@ -19,7 +19,7 @@ function SignUpHod() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/hod/getdept")
+      .get("https://purchase-and-repair.onrender.com/hod/getdept")
       .then((response) => setAll(response.data.depts));
   });
 
@@ -39,7 +39,7 @@ function SignUpHod() {
       // make a POST request to the login route on the back-end server
 
       await axios
-        .post("http://localhost:5000/hod/signup", {
+        .post("https://purchase-and-repair.onrender.com/hod/signup", {
           email: email,
           password: password,
           name: username,

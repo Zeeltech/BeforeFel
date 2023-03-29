@@ -9,12 +9,12 @@ function PcFormPurchase() {
   const [department, setDepartment] = useState("");
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getsupp", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/pc/getsupp", { withCredentials: true })
       .then((response) => setAll(response.data.supp));
   });
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getme", {
+      .get("https://purchase-and-repair.onrender.com/pc/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -52,7 +52,7 @@ function PcFormPurchase() {
     event.preventDefault();
     await axios
       .post(
-        "http://localhost:5000/pc/formpurchase",
+        "https://purchase-and-repair.onrender.com/pc/formpurchase",
         {
           Sr_No: formData.Sr_No,
           Academic_Year: formData.Academic_Year,

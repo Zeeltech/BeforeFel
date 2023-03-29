@@ -9,7 +9,7 @@ const HodDownloadPurchase = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/hod/getme", {
+      .get("https://purchase-and-repair.onrender.com/hod/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -19,7 +19,7 @@ const HodDownloadPurchase = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const response = await axios.get("http://localhost:5000/hod/downloadfile", {
+    const response = await axios.get("https://purchase-and-repair.onrender.com/hod/downloadfile", {
       withCredentials: true,
       responseType: "blob",
       params: {

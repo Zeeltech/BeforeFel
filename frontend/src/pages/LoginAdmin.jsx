@@ -15,7 +15,7 @@ function LoginAdmin() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/admin/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/admin/dashboard", { withCredentials: true })
       .then((response) => navigate("/admin/dashboard"));
   });
 
@@ -26,7 +26,7 @@ function LoginAdmin() {
     } else {
       await axios
         .post(
-          "http://localhost:5000/admin/login",
+          "https://purchase-and-repair.onrender.com/admin/login",
           {
             email: email,
             password: password,

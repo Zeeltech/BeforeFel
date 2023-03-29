@@ -8,7 +8,7 @@ function HodTable(hod) {
     event.preventDefault();
     console.log("click");
     axios
-      .post("http://localhost:5000/hod/status", {
+      .post("https://purchase-and-repair.onrender.com/hod/status", {
         email: hod.hod.email,
         status: hod.hod.status,
       })
@@ -21,7 +21,7 @@ function HodTable(hod) {
   const HandleDelete = async (event) => {
     event.preventDefault();
     await axios
-      .post("http://localhost:5000/hod/delete", {
+      .post("https://purchase-and-repair.onrender.com/hod/delete", {
         email: hod.hod.email,
       })
       .then((res) => {

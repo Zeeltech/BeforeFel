@@ -8,7 +8,7 @@ function PcTable(pc) {
     event.preventDefault();
     console.log("click");
     axios
-      .post("http://localhost:5000/pc/status", {
+      .post("https://purchase-and-repair.onrender.com/pc/status", {
         email: pc.pc.email,
         status: pc.pc.status,
       })
@@ -21,7 +21,7 @@ function PcTable(pc) {
   const HandleDelete = async (event) => {
     event.preventDefault();
     await axios
-      .post("http://localhost:5000/pc/delete", {
+      .post("https://purchase-and-repair.onrender.com/pc/delete", {
         email: pc.pc.email,
       })
       .then((res) => {

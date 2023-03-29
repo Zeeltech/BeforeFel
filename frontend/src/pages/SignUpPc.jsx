@@ -19,13 +19,13 @@ function SignUpPc() {
 
   /*  useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/pc/dashboard", { withCredentials: true })
       .then((response) => navigate("/pc/dashboard"));
   }); */
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getdept")
+      .get("https://purchase-and-repair.onrender.com/pc/getdept")
       .then((response) => setAll(response.data.depts));
   });
 
@@ -45,7 +45,7 @@ function SignUpPc() {
       // make a POST request to the login route on the back-end server
 
       await axios
-        .post("http://localhost:5000/pc/signup", {
+        .post("https://purchase-and-repair.onrender.com/pc/signup", {
           email: email,
           password: password,
           name: username,

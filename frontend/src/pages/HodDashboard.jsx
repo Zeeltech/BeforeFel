@@ -11,7 +11,7 @@ function HodDashboard() {
   const navigate = useNavigate();
   useEffect(() => {
     axios
-      .get("http://localhost:5000/hod/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/hod/dashboard", { withCredentials: true })
       .then((response) => {})
       .catch((err) => navigate("/login/hod"));
   });

@@ -25,7 +25,7 @@ function AdminDashboard() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/admin/getdept", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/admin/getdept", { withCredentials: true })
       .then((response) => setAll(response.data.depts));
   });
 
@@ -33,7 +33,7 @@ function AdminDashboard() {
     event.preventDefault();
     await axios
       .post(
-        "http://localhost:5000/admin/adddept",
+        "https://purchase-and-repair.onrender.com/admin/adddept",
         {
           department: dept,
         },
@@ -51,7 +51,7 @@ function AdminDashboard() {
   const deptDelete = async (event, department) => {
     event.preventDefault();
     await axios
-      .post("http://localhost:5000/admin/deletedept", {
+      .post("https://purchase-and-repair.onrender.com/admin/deletedept", {
         department: department,
       })
       .then((res) => {

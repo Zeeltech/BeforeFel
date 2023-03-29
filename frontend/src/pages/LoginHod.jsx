@@ -15,7 +15,7 @@ function LoginHOD() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/hod/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/hod/dashboard", { withCredentials: true })
       .then((response) => navigate("/hod/dashboard"));
   });
 
@@ -26,7 +26,7 @@ function LoginHOD() {
     } else {
       await axios
         .post(
-          "http://localhost:5000/hod/login",
+          "https://purchase-and-repair.onrender.com/hod/login",
           {
             email: email,
             password: password,

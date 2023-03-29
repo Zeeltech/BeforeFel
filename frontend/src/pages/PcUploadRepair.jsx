@@ -12,7 +12,7 @@ const PcUploadRepair = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getme", {
+      .get("https://purchase-and-repair.onrender.com/pc/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -35,7 +35,7 @@ const PcUploadRepair = () => {
     // console.log(formData);
 
     axios
-      .post("http://localhost:5000/pc/uploadrepairfile", formData, {
+      .post("https://purchase-and-repair.onrender.com/pc/uploadrepairfile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

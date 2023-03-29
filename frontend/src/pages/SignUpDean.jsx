@@ -17,7 +17,7 @@ function SignUpDean() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/dean/dashboard", { withCredentials: true })
+      .get("https://purchase-and-repair.onrender.com/dean/dashboard", { withCredentials: true })
       .then((response) => navigate("/dean/dashboard"));
   });
 
@@ -35,7 +35,7 @@ function SignUpDean() {
     } else {
       // make a POST request to the login route on the back-end server
       await axios
-        .post("http://localhost:5000/dean/signup", {
+        .post("https://purchase-and-repair.onrender.com/dean/signup", {
           email: email,
           password: password,
           name: username,

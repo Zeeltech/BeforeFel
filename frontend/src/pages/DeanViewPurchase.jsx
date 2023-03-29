@@ -27,7 +27,7 @@ const DeanViewPurchase = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await axios.get(
-      "http://localhost:5000/dean/downloadfile",
+      "https://purchase-and-repair.onrender.com/dean/downloadfile",
       {
         responseType: "blob",
         params: {
@@ -58,18 +58,18 @@ const DeanViewPurchase = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:5000/dean/getsupp", {
+      .get("https://purchase-and-repair.onrender.com/dean/getsupp", {
         withCredentials: true,
       })
       .then((response) => {
         setAll(response.data.supp);
-        return axios.get("http://localhost:5000/dean/getme", {
+        return axios.get("https://purchase-and-repair.onrender.com/dean/getme", {
           withCredentials: true,
         });
       })
       .then((response) => {
         setDepartment(response.data.department);
-        return axios.get(`http://localhost:5000/dean/searchpurchase`, {
+        return axios.get(`https://purchase-and-repair.onrender.com/dean/searchpurchase`, {
           withCredentials: true,
           params: {
             sr_no: sr_no,

@@ -80,7 +80,7 @@ const PcViewRepair = () => {
 
     await axios
       .post(
-        "http://localhost:5000/pc/updaterepair",
+        "https://purchase-and-repair.onrender.com/pc/updaterepair",
         {
           _id: formData._id,
           Sr_No: formData.Sr_No,
@@ -120,7 +120,7 @@ const PcViewRepair = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await axios.get(
-      "http://localhost:5000/pc/downloadrepairfile",
+      "https://purchase-and-repair.onrender.com/pc/downloadrepairfile",
       {
         responseType: "blob",
         withCredentials: true,
@@ -152,7 +152,7 @@ const PcViewRepair = () => {
     setConfirmDelete(false);
     try {
       await axios
-        .post("http://localhost:5000/pc/deleterowrepair", {
+        .post("https://purchase-and-repair.onrender.com/pc/deleterowrepair", {
           id: id,
         })
         .then((res) => {
@@ -168,7 +168,7 @@ const PcViewRepair = () => {
   const handleDeleteMany = async () => {
     try {
       await axios
-        .post("http://localhost:5000/pc/deleterowrepairmany", {
+        .post("https://purchase-and-repair.onrender.com/pc/deleterowrepairmany", {
           ids: selectedRows,
         })
         .then((res) => {
@@ -186,18 +186,18 @@ const PcViewRepair = () => {
     setLoading(true);
 
     axios
-      .get("http://localhost:5000/pc/getsupp", {
+      .get("https://purchase-and-repair.onrender.com/pc/getsupp", {
         withCredentials: true,
       })
       .then((response) => {
         setAll(response.data.supp);
-        return axios.get("http://localhost:5000/pc/getme", {
+        return axios.get("https://purchase-and-repair.onrender.com/pc/getme", {
           withCredentials: true,
         });
       })
       .then((response) => {
         setDepartment(response.data.department);
-        return axios.get(`http://localhost:5000/pc/searchrepair`, {
+        return axios.get(`https://purchase-and-repair.onrender.com/pc/searchrepair`, {
           withCredentials: true,
           params: {
             department: response.data.department,

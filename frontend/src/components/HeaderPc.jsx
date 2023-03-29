@@ -14,7 +14,7 @@ function HeaderPc() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/pc/getme", {
+      .get("https://purchase-and-repair.onrender.com/pc/getme", {
         withCredentials: true,
       })
       .then((response) => {
@@ -26,7 +26,7 @@ function HeaderPc() {
   const handleLogout = async (event) => {
     event.preventDefault();
     await axios
-      .get("http://localhost:5000/pc/logout", {
+      .get("https://purchase-and-repair.onrender.com/pc/logout", {
         withCredentials: true,
       })
       .then((response) => navigate("/login/pc"));
