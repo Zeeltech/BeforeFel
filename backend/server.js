@@ -16,7 +16,7 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: "https://master--poetic-licorice-52cef4.netlify.app/",
+  origin: "https://master--poetic-licorice-52cef4.netlify.app",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
