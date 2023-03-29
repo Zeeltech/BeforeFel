@@ -16,7 +16,7 @@ connectDB();
 const app = express();
 
 const corsOptions = {
-  origin: process.env.VERCEL_URL,
+  origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };
@@ -27,10 +27,10 @@ app.use(cookieParser());
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use("api/admin", adminroute);
-app.use("api/dean", deanroute);
-app.use("api/hod", hodroute);
-app.use("api/pc", pcroute);
+app.use("/api/admin", adminroute);
+app.use("/api/dean", deanroute);
+app.use("/api/hod", hodroute);
+app.use("/api/pc", pcroute);
 
 app.use(errorHandler);
 
