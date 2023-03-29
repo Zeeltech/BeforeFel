@@ -5,9 +5,9 @@ const PurchaseController = require("../models/pcModel");
 const protectPc = asyncHandler(async (req, res, next) => {
   try {
     const token = req.cookies.jwtokenpc;
-      if (!token) {
-        throw new Error("Authentication failed! Token not provided.");
-      }
+    if (!token) {
+      return response.status(401).json({ error: "Authorization required" });
+    }
     const verify_token = jwt.verify(
       token,
       process.env.JWT_SECRET
