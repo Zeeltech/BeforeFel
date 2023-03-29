@@ -21,6 +21,7 @@
     "bcryptjs": "^2.4.3",
     "chmodr": "^1.2.0",
     "colors": "^1.4.0",
+    "concurrently": "^8.0.1",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
