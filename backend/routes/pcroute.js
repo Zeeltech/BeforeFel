@@ -41,33 +41,33 @@ router.post("/signup", registerPc);
 router.post("/login", loginPc);
 router.post("/req", getAllPending);
 router.post("/status", makeActive);
-router.get("/dashboard",  (req, res) => {
+router.get("/dashboard", protectPc, (req, res) => {
   res.json({ message: "Authorized" });
 });
 router.get("/logout", protectPc, logoutPc); //
 router.get("/getme", protectPc, getPcInfo); //
 router.post("/delete",  deletePc); //////
 router.get("/getdept", getdept); //
-router.post("/addsupp",  addSupplier);
+router.post("/addsupp", addSupplier);
 router.get("/getsupp", protectPc, getSupplier); //
-router.post("/deletesupp",  delSupplier); //
+router.post("/deletesupp", delSupplier); //
 
-router.get("/getpurchase",  getpurchase); //
-router.get("/getrepair",  getrepair); //
+router.get("/getpurchase", getpurchase); //
+router.get("/getrepair", getrepair); //
 
-router.post("/formpurchase",  formpurchase);
-router.post("/formrepair",  formrepair);
+router.post("/formpurchase", formpurchase);
+router.post("/formrepair", formrepair);
 
-router.post("/updaterepair",  updaterepair);
-router.post("/updatepurchase",  updatepurchase);
+router.post("/updaterepair", updaterepair);
+router.post("/updatepurchase", updatepurchase);
 
-router.get("/searchpurchase",  searchPurchase);
-router.get("/searchrepair",  searchRepair);
+router.get("/searchpurchase", searchPurchase);
+router.get("/searchrepair", searchRepair);
 
-router.post("/deleterow",  deleteRow);
-router.post("/deleterowrepair",  deleteRowRepair);
-router.post("/deleterowrepairmany",  deleteRowRepairMany);
-router.post("/deleterowmany",  deleteRowMany);
+router.post("/deleterow", deleteRow);
+router.post("/deleterowrepair", deleteRowRepair);
+router.post("/deleterowrepairmany", deleteRowRepairMany);
+router.post("/deleterowmany", deleteRowMany);
 
 // ===============================================================================
 // upload purchase file
@@ -118,7 +118,7 @@ router.post(
 );
 //----------------------------------------------------------------
 // download purchase file
-router.get("/downloadfile",  downloadfile); //For download repair file
+router.get("/downloadfile", downloadfile); //For download repair file
 
 //========================================================================
 // Upload repair file
@@ -170,6 +170,6 @@ router.post(
 
 //----------------------------------------------------------------
 // download repair  file
-router.get("/downloadrepairfile",  downloadrepairfile);
+router.get("/downloadrepairfile", downloadrepairfile);
 
 module.exports = router;
